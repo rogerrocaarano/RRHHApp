@@ -1,9 +1,10 @@
+import "./App.css";
+
 function App() {
 	return (
-		<>
+		<main>
 			<h1>RRHH</h1>
-			<p>Rama Desarrollo </p>
-		</>
+		</main>
 	);
 }
 
