@@ -1,8 +1,10 @@
 import { Aside } from "./Components/CommonComponents/Aside";
+import { Navbar } from "./Components/CommonComponents/Navbar.1";
 import { SecOfertas } from "./Components/OfertaDeEmpleo/SecOfertas";
 function App() {
 	return (
 		<main className='w-svw h-svh overflow-x-hidden bg-slate-100 flex'>
+			<Navbar />
 			<Aside />
 			<main className='w-[80%] px-4 py-24'>
 				{/* Secciones de ofertas con scroll  */}
