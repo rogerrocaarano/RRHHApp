@@ -12,6 +12,7 @@ public class JobOffer
     public string Status { get; set; }
     public Recruiter CreatedBy { get; set; }
     public Director? ApprovedBy { get; set; }
+    public string? DirectorReview { get; set; }
     public List<JobRequirement> Requirements { get; set; }
     public List<JobApply> Applies { get; set; }
 }
