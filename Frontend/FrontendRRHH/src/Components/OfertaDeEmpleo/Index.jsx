@@ -10,9 +10,7 @@ export function OfertView() {
 				</h2>
 				<SecOfertas statusOfer='Pending' />
 
-				<h2 className='h-fit text-xl font-bold'>
-					Ofertas Pendientes de Aprobacion
-				</h2>
+				<h2 className='h-fit text-xl font-bold'>Ofertas Activas</h2>
 				<SecOfertas statusOfer='Active' />
 			</section>
 		</section>
