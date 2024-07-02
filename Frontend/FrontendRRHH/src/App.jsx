@@ -1,6 +1,5 @@
 import { Aside } from "./Components/CommonComponents/Aside";
 import { Navbar } from "./Components/CommonComponents/Navbar.1";
-import { Buscador } from "./Components/CommonComponents/Buscador";
 import { OfertView } from "./Components/OfertaDeEmpleo/Index";
 
 
@@ -11,7 +10,7 @@ function App() {
 			<Navbar />
 			<main className='flex h-full'>
 				<Aside />
-        <Buscador />
+        
 				<OfertView />
         
 			</main>
