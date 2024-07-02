@@ -1,4 +1,6 @@
 import { SecOfertas } from "./SecOfertas";
+import { Buscador } from "../CommonComponents/Buscador";
+import { BotonBuscador } from "../CommonComponents/BotonBuscador";
 import { OfertForm } from "./OfertForm";
 export function OfertView() {
 	return (
