@@ -3,51 +3,57 @@ using RRHHApp.Api.Domain.Repositories;
 
 namespace RRHHApp.Api.Domain.Services;
 
-public class JobOfferService
+public class JobOfferService(IJobOfferRepository jobOfferRepository)
 {
-    private readonly IJobOfferRepository _jobOfferRepository;
+    private readonly IJobOfferRepository _jobOfferRepository = jobOfferRepository;
 
-    public JobOfferService(IJobOfferRepository jobOfferRepository)
+    public async Task<JobOffer> CreateJobOffer(JobOffer jobOffer)
     {
-        _jobOfferRepository = jobOfferRepository;
+        var addedJobOffer = await _jobOfferRepository.Add(jobOffer);
+        return addedJobOffer;
     }
     
-    public void CreateJobOffer(JobOffer jobOffer)
+    public async Task<JobRequirement> AddJobRequirement(JobRequirement jobRequirement)
     {
-        throw new NotImplementedException();
+        var addedJobRequirement = await _jobOfferRepository.AddRequirement(jobRequirement);
+        return addedJobRequirement;
     }
     
-    public void AddJobRequirement(JobOffer jobOffer, JobRequirement jobRequirement)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public void UpdateJobOffer(JobOffer jobOffer)
+    public async Task<JobOffer> UpdateJobOffer()
     {
         throw new NotImplementedException();
     }
     
-    public void DeleteJobOffer(Guid id)
+    public async Task DeleteJobOffer()
     {
         throw new NotImplementedException();
     }
     
-    public JobOffer GetJobOffer(Guid id)
+    public async Task<JobOffer> GetJobOffer(Guid id)
     {
-        throw new NotImplementedException();
+        var jobOffer = await _jobOfferRepository.GetById(id);
+        return jobOffer;
     }
     
-    public List<JobOffer> GetAllJobOffers()
+    public async Task<List<JobOffer>> GetAllJobOffers()
     {
-        throw new NotImplementedException();
+        var jobOffers = await _jobOfferRepository.GetAll();
+        return jobOffers;
     }
     
-    public void ApproveJobOffer(Guid id)
+    public async Task<JobRequirement> GetJobOfferRequirement(Guid requirementId)
     {
-        throw new NotImplementedException();
+        var requirement = await _jobOfferRepository.GetRequirement(requirementId);
+        return requirement;
     }
     
-    public void ApplyToJobOffer(Guid id, JobApply jobApply)
+    public async Task<List<JobRequirement>> GetAllJobOfferRequirements(Guid jobOfferId)
+    {
+        var requirements = await _jobOfferRepository.GetAllRequirements(jobOfferId);
+        return requirements;
+    }
+    
+    public async Task<JobApply> ApplyToJobOffer()
     {
         throw new NotImplementedException();
     }

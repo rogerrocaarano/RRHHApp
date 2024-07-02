@@ -1,8 +1,7 @@
-﻿namespace RRHHApp.Api.Domain.Entities;
+﻿namespace RRHHApp.Api.Application.DTOs;
 
-public class JobRequirement
+public class CreateJobOfferRequirementDto
 {
-    public Guid Id { get; set; }
     public Guid JobOfferId { get; set; }
     public string Description { get; set; }
     public int Value { get; set; }

@@ -12,11 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Adapters\" />
-      <Folder Include="Application\Interfaces\" />
-      <Folder Include="Application\Services\" />
       <Folder Include="Infraestructure\ExternalServices\" />
-      <Folder Include="Infraestructure\Persistence\" />
     </ItemGroup>
 
 </Project>
