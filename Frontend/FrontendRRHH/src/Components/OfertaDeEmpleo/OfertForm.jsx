@@ -1,7 +1,38 @@
-export function OfertForm() {
+import { useForm } from "react-hook-form";
+/* eslint-disable react/prop-types */
+
+export function OfertForm({ toggleFunction }) {
+	const currentDate = new Date().toISOString().split("T")[0];
+	const {
+		register,
+		handleSubmit,
+		reset,
+		watch,
+		setValue,
+		formState: { errors },
+		formState: { isDirty },
+	} = useForm({
+		defaultValues: {
+			PublishedDate: currentDate,
+		},
+	});
+
+	//observa el valor de la fehca de publicacion para no poder usar fechas anteriores
+	const publishedDate = watch("PublishedDate");
+
+	const onSubmitNewOferr = async (newData) => {
+		console.log(newData);
+		// poner neuva fn del hook
+
+		// toggleFunction() -> Cierra el formulario
+	};
+
 	return (
 		<main className=' w-full h-screen flex justify-center items-center'>
-			<form className=' bg-zinc-100 z-20 flex flex-col gap-4 h-[450px] overflow-y-scroll p-6 w-[50%] ml-[10%] rounded-xl'>
+			<form
+				className=' bg-zinc-100 z-20 flex flex-col gap-4 h-[450px] overflow-y-scroll p-6 w-[50%] ml-[10%] rounded-xl'
+				onSubmit={handleSubmit(onSubmitNewOferr)}
+			>
 				<h2 className='text-xl font-bold flex justify-center mb-6'>
 					Crear Oferta{" "}
 				</h2>
@@ -14,15 +45,51 @@ export function OfertForm() {
 						{" "}
 						Titulo{" "}
 					</label>
-					<input className='w-2/3 rounded-xl pl-4' type='text' />
+					<input
+						className='w-2/3 rounded-xl pl-4'
+						type='text'
+						{...register("Title", {
+							required: {
+								value: true,
+								message: "Debes completar el campo",
+							},
+							minLength: {
+								value: 6,
+								message: "El titulo debe tener al menos 6 Caracteres",
+							},
+						})}
+					/>
 				</div>
+				{errors.Title && (
+					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
+						{errors.Title.message}
+					</span>
+				)}
 
 				{/* descripcion */}
 				<label className='-mb-4' htmlFor='Description'>
 					{" "}
 					Descripción{" "}
 				</label>
-				<textarea type='text' className='rounded-xl px-6 py-1' />
+				<textarea
+					type='text'
+					className='rounded-xl px-6 py-1'
+					{...register("Description", {
+						required: {
+							value: true,
+							message: "Debes completar el campo",
+						},
+						minLength: {
+							value: 16,
+							message: "El titulo debe tener al menos 16 Caracteres",
+						},
+					})}
+				/>
+				{errors.Description && (
+					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
+						{errors.Description.message}
+					</span>
+				)}
 
 				{/* Fecha de Publicacion  */}
 				<div className='flex justify-around gap-4'>
@@ -33,7 +100,12 @@ export function OfertForm() {
 						{" "}
 						Fecha de Publicación{" "}
 					</label>
-					<input className='w-2/3 rounded-xl  pl-36' type='date' />
+					<input
+						className='w-2/3 rounded-xl  pl-36'
+						type='date'
+						{...register("PublishedDate")}
+						disabled
+					/>
 				</div>
 
 				{/* Fecha de Expiración  */}
@@ -45,9 +117,26 @@ export function OfertForm() {
 						{" "}
 						Fecha de Expiración{" "}
 					</label>
-					<input className='w-2/3 rounded-xl flex pl-36' type='date' />
-				</div>
+					<input
+						className='w-2/3 rounded-xl flex pl-36'
+						type='date'
+						{...register("ExpirationDate", {
+							required: {
+								value: true,
+								message: "Debes completar el campo",
+							},
 
+							validate: (value) =>
+								value > publishedDate ||
+								"La fecha de expiración no puede ser anterior o igual a la fecha de publicación",
+						})}
+					/>
+				</div>
+				{errors.ExpirationDate && (
+					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
+						{errors.ExpirationDate.message}
+					</span>
+				)}
 				{/* Fecha de Edicion - Solo cunado se edite  */}
 
 				<div className='flex justify-around gap-4'>
@@ -58,8 +147,22 @@ export function OfertForm() {
 						{" "}
 						Fecha de Edicion{" "}
 					</label>
-					<input className='w-2/3 rounded-xl flex pl-36' type='date' />
+					<input
+						className='w-2/3 rounded-xl flex pl-36'
+						type='date'
+						{...register("LastUpdatedDate", {
+							validate: (value) =>
+								!value ||
+								value >= publishedDate ||
+								"La fecha de edición no puede ser anterior o igual a la fecha de publicación",
+						})}
+					/>
 				</div>
+				{errors.LastUpdatedDate && (
+					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
+						{errors.LastUpdatedDate.message}
+					</span>
+				)}
 
 				{/* Presupuesto - solo recibe numeros*/}
 
@@ -71,8 +174,27 @@ export function OfertForm() {
 						{" "}
 						Presupuesto{" "}
 					</label>
-					<input className='w-2/3 rounded-xl' type='text' />
+					<input
+						className='w-2/3 rounded-xl pl-4'
+						type='text'
+						{...register("Budget", {
+							required: {
+								value: true,
+								message:
+									"Debes completar el campo, aqui tienes un ejemplo: 890 Euros",
+							},
+							pattern: {
+								value: /\d/,
+								message: "Debe contener al menos un número",
+							},
+						})}
+					/>
 				</div>
+				{errors.Budget && (
+					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
+						{errors.Budget.message}
+					</span>
+				)}
 
 				{/*Display Presupuesto - solo recibe numeros*/}
 				<div className='flex justify-start gap-4'>
@@ -83,10 +205,12 @@ export function OfertForm() {
 						{" "}
 						Hacer visible el Presupuesto{" "}
 					</label>
-					<input className='size-6 my-auto rounded-xl' type='checkbox' />
+					<input
+						className='size-6 my-auto rounded-xl'
+						type='checkbox'
+						{...register("DisplayBudget")}
+					/>
 				</div>
-				<label htmlFor='DisplayBudget'> </label>
-				<input type='' />
 
 				{/* Estado de la Oferta - deberia ser un select ?*/}
 				<div className='flex justify-around gap-4'>
@@ -97,7 +221,12 @@ export function OfertForm() {
 						{" "}
 						Estado de la Oferta{" "}
 					</label>
-					<input className='w-2/3 rounded-xl' type='text' />
+					<select className='w-2/3 rounded-xl pl-6' type='text'>
+						<option value='Pennding'>Pendiente</option>
+						<option value='InRevision'>En Revisión</option>
+						<option value='Active'>Activa</option>
+						<option value='Close'>Cerrada</option>
+					</select>
 				</div>
 
 				{/* Creada por  */}
@@ -109,10 +238,24 @@ export function OfertForm() {
 						{" "}
 						Creada por :{" "}
 					</label>
-					<input className='w-2/3 rounded-xl' type='text' />
+					<input
+						className='w-2/3 rounded-xl pl-4'
+						type='text'
+						{...register("CreatedBy", {
+							required: {
+								value: true,
+								message: "Debes completar el campo",
+							},
+						})}
+					/>
 				</div>
+				{errors.CreatedBy && (
+					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
+						{errors.CreatedBy.message}
+					</span>
+				)}
 				{/* Aprovada por - solo disponible para quien tenga permismos de aprovacion */}
-				<div className='flex justify-around gap-4'>
+				{/* <div className='flex justify-around gap-4'>
 					<label
 						className='w-1/3 text-base py-2 font-semibold border-b-2 border-zinc-900'
 						htmlFor='ApprovedBy'
@@ -120,8 +263,22 @@ export function OfertForm() {
 						{" "}
 						Aprovada por :{" "}
 					</label>
-					<input className='w-2/3 rounded-xl' type='text' />
-				</div>
+					<input
+						className='w-2/3 rounded-xl'
+						type='text'
+						{...register("ApprovedBy", {
+							required: {
+								value: true,
+								message: "Debes completar el campo",
+							},
+						})}
+					/>
+				</div> */}
+				{errors.ApprovedBy && (
+					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
+						{errors.ApprovedBy.message}
+					</span>
+				)}
 
 				{/* Hay que trabajar la lista de requerimientos y la lista de personas que han aplicado... aunque esta ultima no tienen tanto que ver en el formulario */}
 
