@@ -24,6 +24,15 @@ builder.Services.AddSingleton<JobOfferService>();
 // Add Application services
 builder.Services.AddSingleton<IJobOfferAppService, JobOfferAppService>();
 
+// Configuring CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("*")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
