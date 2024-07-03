@@ -23,7 +23,7 @@ export function OfertForm({ toggleFunction }) {
 	const onSubmitNewOferr = async (newData) => {
 		console.log(newData);
 		// poner neuva fn del hook
-
+		reset()
 		// toggleFunction() -> Cierra el formulario
 	};
 
@@ -296,7 +296,7 @@ export function OfertForm({ toggleFunction }) {
 					>
 						Guardar
 					</button>
-					<button className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer'>
+					<button className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer' onClick={()=> reset()}>
 						Resetear
 					</button>
 				</div>
