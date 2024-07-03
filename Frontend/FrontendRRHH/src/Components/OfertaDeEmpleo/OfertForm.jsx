@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 /* eslint-disable react/prop-types */
+import { JobOffersHandler } from "../../hooks/jobOffersHandler";
 
 export function OfertForm({ toggleFunction }) {
+	const { createOfferHandler } = JobOffersHandler();
 	const currentDate = new Date().toISOString().split("T")[0];
 	const {
 		register,
@@ -21,6 +23,7 @@ export function OfertForm({ toggleFunction }) {
 
 	const onSubmitNewOferr = async (newData) => {
 		console.log(newData);
+		createOfferHandler(newData);
 		// poner neuva fn del hook
 		reset();
 		// toggleFunction() -> Cierra el formulario
