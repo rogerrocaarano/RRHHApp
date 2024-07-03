@@ -8,7 +8,6 @@ export function OfertForm({ toggleFunction }) {
 		handleSubmit,
 		reset,
 		watch,
-		setValue,
 		formState: { errors },
 		formState: { isDirty },
 	} = useForm({
@@ -23,7 +22,7 @@ export function OfertForm({ toggleFunction }) {
 	const onSubmitNewOferr = async (newData) => {
 		console.log(newData);
 		// poner neuva fn del hook
-		reset()
+		reset();
 		// toggleFunction() -> Cierra el formulario
 	};
 
@@ -221,10 +220,14 @@ export function OfertForm({ toggleFunction }) {
 						{" "}
 						Estado de la Oferta{" "}
 					</label>
-					<select className='w-2/3 rounded-xl pl-6' type='text'>
-						<option value='Pennding'>Pendiente</option>
+					<select
+						className='w-2/3 rounded-xl pl-6'
+						type='text'
+						{...register("Status")}
+					>
+						<option value='Pending approval'>Pendiente</option>
 						<option value='InRevision'>En Revisión</option>
-						<option value='Active'>Activa</option>
+						<option value='Approval'>Activa</option>
 						<option value='Close'>Cerrada</option>
 					</select>
 				</div>
@@ -292,11 +295,17 @@ export function OfertForm({ toggleFunction }) {
 					{/* Guardar/editar -> para quien la crea -> Enviar Revision/Aceptar para quien tenga permisos */}
 					<button
 						type='submit'
-						className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-500 bg-green-200/80 text-green-700 hover:border-green-200 hover:text-green-200 hover:bg-green-600 hover:cursor-pointer'
+						className={`w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-500 bg-green-200/80 text-green-700 hover:border-green-200 hover:text-green-200 hover:bg-green-600 hover:cursor-pointer  ${
+							isDirty && "border-green-900 text-gray-500"
+						}`}
+						// disabled={!isDirty} REVISAR
 					>
 						Guardar
 					</button>
-					<button className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer' onClick={()=> reset()}>
+					<button
+						className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer'
+						onClick={() => reset()}
+					>
 						Resetear
 					</button>
 				</div>
