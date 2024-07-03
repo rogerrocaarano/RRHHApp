@@ -1,10 +1,29 @@
+import { useState, useEffect } from "react";
+//componentes
 import { SecOfertas } from "./SecOfertas";
 import { Buscador } from "../CommonComponents/Buscador";
 import { BotonBuscador } from "../CommonComponents/BotonBuscador";
 import { OfertForm } from "./OfertForm";
-import { useState } from "react";
+//Hook
+import { useJobOffersHandler } from "../../hooks/useJobOffers";
+
+//componente de react
 export function OfertView() {
 	const [toggleForm, setToggleForm] = useState(false);
+	const [allOffers, setAllOffers] = useState(null);
+	const { getAllOffers } = useJobOffersHandler();
+
+	useEffect(() => {
+		//funcion que consume el hook
+		const fetchOffers = async () => {
+			const allOffersInDb = await getAllOffers();
+			setAllOffers(allOffersInDb);
+		};
+
+		fetchOffers();
+	}, [getAllOffers]);
+	console.log("todas las ofertas aca", allOffers);
+
 	const toggleFunction = () => {
 		setToggleForm(!toggleForm);
 	};

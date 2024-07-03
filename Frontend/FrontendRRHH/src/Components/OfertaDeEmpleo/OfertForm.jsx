@@ -1,32 +1,36 @@
+/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
-/* eslint-disable react/prop-types */
-import { JobOffersHandler } from "../../hooks/jobOffersHandler";
+import { useJobOffersHandler } from "../../hooks/useJobOffers";
 
+/* eslint-disable react/prop-types */
 export function OfertForm({ toggleFunction }) {
-	const { createOfferHandler } = JobOffersHandler();
+	//Guarda el valor del dia de creacion para setearlo en el formulario como valor default
 	const currentDate = new Date().toISOString().split("T")[0];
+	//accede a las funciones del Hook de manejo de Ofertas
+	const { createNewOffer } = useJobOffersHandler();
+
+	//Seteo del Hook-Form -> manejador del formulario
 	const {
 		register,
 		handleSubmit,
 		reset,
 		watch,
-		formState: { errors },
-		formState: { isDirty },
+		formState: { errors, isDirty }, // Desestructuramos 'formState' una sola vez
 	} = useForm({
 		defaultValues: {
 			PublishedDate: currentDate,
 		},
 	});
 
-	//observa el valor de la fehca de publicacion para no poder usar fechas anteriores
+	// Observa el valor de la fecha de publicación para no poder usar fechas anteriores
 	const publishedDate = watch("PublishedDate");
 
 	const onSubmitNewOferr = async (newData) => {
 		console.log(newData);
-		createOfferHandler(newData);
-		// poner neuva fn del hook
+		await createNewOffer(newData);
+		// Poner nueva función del hook
 		reset();
-		// toggleFunction() -> Cierra el formulario
+		toggleFunction(); // Cierra el formulario
 	};
 
 	return (
