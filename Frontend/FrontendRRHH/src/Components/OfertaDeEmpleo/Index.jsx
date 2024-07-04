@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 //componentes
 import { SecOfertas } from "./SecOfertas";
 import { Buscador } from "../CommonComponents/Buscador";
-import { BotonBuscador } from "../CommonComponents/BotonBuscador";
+import { BotonCrearOferta } from "../CommonComponents/BotonCrearOferta";
 import { OfertForm } from "./OfertForm";
 //Hook
 import { useJobOfferStore } from "../../Stores/JobOfferStore";
@@ -22,17 +22,17 @@ export function OfertView() {
 		setToggleForm(!toggleForm);
 	};
 	return (
-		<section className='w-[80%] h-fit  overflow-hidden relative'>
+		<section className='w-[80%] h-fit  overflow-hidden pl-10 pt-8'>
 			<section className=' h-24 w-10/12 -ml-4 flex justify-around items-center'>
 				<Buscador />
-				<BotonBuscador toggleFunction={toggleFunction} />
+				<BotonCrearOferta toggleFunction={toggleFunction} />
 			</section>
 
 			{/* div de abajo contiene el popUp del Formulario */}
 			<div
 				className={`${
 					toggleForm ? "block" : "hidden"
-				} absolute top-0 left-0 w-screen h-screenn bg-zinc-900/65 z-10 -ml-[20%]`}
+				} absolute top-0 left-0 w-screen h-screen bg-zinc-900/65 z-10 `}
 			>
 				<OfertForm toggleFunction={toggleFunction} />
 			</div>
