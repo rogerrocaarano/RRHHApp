@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
-import { useJobOffersHandler } from "../../hooks/useJobOffers";
-
+import { useJobOfferStore } from "../../Stores/JobOfferStore";
 /* eslint-disable react/prop-types */
 export function OfertForm({ toggleFunction }) {
 	//Guarda el valor del dia de creacion para setearlo en el formulario como valor default
 	const currentDate = new Date().toISOString().split("T")[0];
 	//accede a las funciones del Hook de manejo de Ofertas
-	const { createNewOffer } = useJobOffersHandler();
+	const { createNewOffer } = useJobOfferStore();
 
 	//Seteo del Hook-Form -> manejador del formulario
 	const {

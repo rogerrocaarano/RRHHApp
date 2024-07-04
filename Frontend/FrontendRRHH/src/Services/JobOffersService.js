@@ -16,7 +16,7 @@ export const getOffers = async () => {
 //Crear Oferta
 export const createOffer = async (newOffer) => {
 	try {
-		const { data } = await api.post("/Create", { newOffer });
+		const { data } = await api.post("/Create", newOffer);
 		console.log("Response de oferta", data);
 	} catch (err) {
 		console.log("Error al crear Oferta:", err);

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 //componentes
 import { SecOfertas } from "./SecOfertas";
@@ -5,26 +6,19 @@ import { Buscador } from "../CommonComponents/Buscador";
 import { BotonBuscador } from "../CommonComponents/BotonBuscador";
 import { OfertForm } from "./OfertForm";
 //Hook
-import { useJobOffersHandler } from "../../hooks/useJobOffers";
+import { useJobOfferStore } from "../../Stores/JobOfferStore";
 
 //componente de react
 export function OfertView() {
 	const [toggleForm, setToggleForm] = useState(false);
-	const [allOffers, setAllOffers] = useState(null);
-	const { getAllOffers } = useJobOffersHandler();
+	const { getAllOffers, loading, error } = useJobOfferStore();
 
 	useEffect(() => {
-		//funcion que consume el hook
-		const fetchOffers = async () => {
-			const allOffersInDb = await getAllOffers();
-			setAllOffers(allOffersInDb);
-		};
-
-		fetchOffers();
-	}, [getAllOffers]);
-	console.log("todas las ofertas aca", allOffers);
+		getAllOffers();
+	}, []); //solo se ejecuta el efecto cuando carga la app
 
 	const toggleFunction = () => {
+		// abre y cierra la vista del formulario
 		setToggleForm(!toggleForm);
 	};
 	return (
@@ -44,13 +38,26 @@ export function OfertView() {
 			</div>
 			{/* Secciones de ofertas con scroll  */}
 			<section className='flex flex-col m-4 h-[62%]'>
-				<h2 className='h-fit text-xl font-bold'>
-					Ofertas Pendientes de Aprobacion
+				<h2 className={`${loading || error ? "flex" : "hidden"}`}>
+					{loading && "Cargando... "}
+					{error && error}
 				</h2>
-				<SecOfertas statusOfer='Pending' />
 
-				<h2 className='h-fit text-xl font-bold'>Ofertas Activas</h2>
-				<SecOfertas statusOfer='Active' />
+				{!loading && !error && (
+					<>
+						<h2 className='h-fit text-xl font-bold'>
+							Ofertas Pendientes de Aprobacion
+						</h2>
+						<SecOfertas statusOfer='Pending' />
+					</>
+				)}
+
+				{!loading && !error && (
+					<>
+						<h2 className='h-fit text-xl font-bold'>Ofertas Activas</h2>
+						<SecOfertas statusOfer='Active' />
+					</>
+				)}
 			</section>
 		</section>
 	);
