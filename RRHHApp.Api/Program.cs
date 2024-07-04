@@ -3,6 +3,7 @@ using RRHHApp.Api.Application.Services;
 using RRHHApp.Api.Domain.Repositories;
 using RRHHApp.Api.Domain.Services;
 using RRHHApp.Api.Infraestructure.Persistence;
+using RRHHApp.Api.Infraestructure.Persistence.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 // Add repositories
-builder.Services.AddSingleton<IJobOfferRepository, JobOfferRepository>();
-builder.Services.AddSingleton<IJobOfferReviewRepository, JobOfferReviewRepository>();
+builder.Services.AddSingleton<IJobOfferRepository, MemJobOfferRepository>();
+builder.Services.AddSingleton<IJobOfferReviewRepository, MemJobOfferReviewRepository>();
 
 // Add domain services
 builder.Services.AddSingleton<JobOfferService>();

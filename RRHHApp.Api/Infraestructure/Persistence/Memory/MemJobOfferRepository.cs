@@ -1,9 +1,9 @@
-﻿using RRHHApp.Api.Domain.Repositories;
-using RRHHApp.Api.Domain.Entities;
+﻿using RRHHApp.Api.Domain.Entities;
+using RRHHApp.Api.Domain.Repositories;
 
-namespace RRHHApp.Api.Infraestructure.Persistence;
+namespace RRHHApp.Api.Infraestructure.Persistence.Memory;
 
-public class JobOfferRepository : IJobOfferRepository
+public class MemJobOfferRepository : IJobOfferRepository
 {
     // Todo: Implementar utilizando una base de datos real con Entity Framework
     private readonly List<JobOffer> _jobOffers = new List<JobOffer>();
