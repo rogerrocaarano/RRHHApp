@@ -1,13 +1,14 @@
 import { SecOfertas } from "./SecOfertas";
 import { Buscador } from "../CommonComponents/Buscador";
 import { BotonBuscador } from "../CommonComponents/BotonBuscador";
-
+import { Formulario } from "./Formulario";
 export function OfertView() {
   return (
-    <section className="w-[80%] h-fit px-4 pt-24 overflow-hidden">
+    <><section className="w-[80%] h-fit px-4 pt-24 overflow-hidden">
       <div>
         <Buscador />
-		<BotonBuscador />
+        <BotonBuscador />
+
       </div>
 
       {/* Secciones de ofertas con scroll  */}
@@ -22,6 +23,8 @@ export function OfertView() {
         </h2>
         <SecOfertas statusOfer="Active" />
       </section>
-    </section>
+
+    </section></>
+    
   );
 }
