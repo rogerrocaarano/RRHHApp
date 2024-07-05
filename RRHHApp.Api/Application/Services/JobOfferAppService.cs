@@ -56,6 +56,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
         return new JobOfferRequirementDto
         {
             Id = jobRequirement.Id,
+            JobOfferId = jobRequirement.JobOfferId,
             Description = jobRequirement.Description,
             Value = jobRequirement.Value,
             Required = jobRequirement.Required
