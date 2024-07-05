@@ -23,7 +23,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
         };
     }
     
-    private JobOffer MapDtoToJobOffer(CreateJobOfferDto createJobOfferDto)
+    private JobOffer MapCreateDtoToJobOffer(CreateJobOfferDto createJobOfferDto)
     {
         return new JobOffer
         {
@@ -35,9 +35,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
             DisplayBudget = createJobOfferDto.DisplayBudget,
             Budget = createJobOfferDto.Budget,
             Status = "Pending approval",
-            Requirements = new List<JobRequirement>(),
-            // Reviews = new List<JobOfferReview>(),
-            // Applies = new List<JobApply>()
+            Requirements = new List<JobRequirement>()
         };
     }
     
@@ -46,6 +44,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
         return new JobRequirement
         {
             Id = Guid.NewGuid(),
+            JobOfferId = createJobOfferRequirementDto.JobOfferId,
             Description = createJobOfferRequirementDto.Description,
             Value = createJobOfferRequirementDto.Value,
             Required = createJobOfferRequirementDto.Required
@@ -57,6 +56,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
         return new JobOfferRequirementDto
         {
             Id = jobRequirement.Id,
+            JobOfferId = jobRequirement.JobOfferId,
             Description = jobRequirement.Description,
             Value = jobRequirement.Value,
             Required = jobRequirement.Required
@@ -77,7 +77,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
 
     public async Task<JobOfferDto> CreateJobOffer(CreateJobOfferDto createJobOfferDto)
     {
-        var jobOffer = MapDtoToJobOffer(createJobOfferDto);
+        var jobOffer = MapCreateDtoToJobOffer(createJobOfferDto);
         var addedJobOffer = await _jobOfferService.CreateJobOffer(jobOffer);
         return MapJobOfferToDto(addedJobOffer);
     }
@@ -92,14 +92,11 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
         throw new NotImplementedException();
     }
 
-    public async Task<JobOfferRequirementDto> AddRequirement(Guid jobOfferId, CreateJobOfferRequirementDto jobOfferRequirementDto)
+    public async Task<JobOfferRequirementDto> AddRequirement(CreateJobOfferRequirementDto jobOfferRequirementDto)
     {
-        var jobOffer = _jobOfferService.GetJobOffer(jobOfferId);
-        // TODO: Actualizar la oferta con el nuevo requisito
-        
-        var jobOfferRequirement = MapDtoToJobRequirement(jobOfferRequirementDto);
-        var addedJobRequirement = await _jobOfferService.AddJobRequirement(jobOfferRequirement);
-        return MapJobRequirementToDto(addedJobRequirement);
+        var jobRequirement = MapDtoToJobRequirement(jobOfferRequirementDto);
+        await _jobOfferService.AddJobOfferRequirement(jobRequirement);
+        return MapJobRequirementToDto(jobRequirement);
     }
 
     public async Task<List<JobOfferRequirementDto>> GetJobOfferRequirements(Guid jobOfferId)
