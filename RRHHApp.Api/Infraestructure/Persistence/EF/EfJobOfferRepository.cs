@@ -23,12 +23,14 @@ public class EfJobOfferRepository(AppDbContext context) : IJobOfferRepository
     {
         await _context.JobOffers.AddAsync(jobOffer);
         await _context.SaveChangesAsync();
-        return await GetById(jobOffer.Id);
+        return await _context.JobOffers.FindAsync(jobOffer.Id);
     }
 
     public async Task<JobOffer> Update(JobOffer jobOffer)
     {
-        throw new NotImplementedException();
+        var updatedJobOffer = _context.JobOffers.Update(jobOffer);
+        await _context.SaveChangesAsync();
+        return updatedJobOffer.Entity;
     }
 
     public async Task Delete(Guid id)
