@@ -1,9 +1,9 @@
 ﻿using RRHHApp.Api.Domain.Entities;
 using RRHHApp.Api.Domain.Repositories;
 
-namespace RRHHApp.Api.Infraestructure.Persistence;
+namespace RRHHApp.Api.Infraestructure.Persistence.Memory;
 
-public class JobOfferReviewRepository: IJobOfferReviewRepository
+public class MemJobOfferReviewRepository: IJobOfferReviewRepository
 {
     public async Task<JobOfferReview> GetById(Guid id)
     {
