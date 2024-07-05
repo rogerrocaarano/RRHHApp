@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 //componentes
-import { SecOfertas } from "./SecOfertas";
-import { Buscador } from "../CommonComponents/Buscador";
-import { BotonCrearOferta } from "../CommonComponents/BotonCrearOferta";
-import { OfertForm } from "./OfertForm";
+import { SecOfertas } from "../Components/OfertaDeEmpleo/SecOfertas";
+import { Buscador } from "../Components/CommonComponents/Buscador";
+import { BotonCrearOferta } from "../Components/CommonComponents/BotonCrearOferta";
+import { OfertForm } from "../Components/OfertaDeEmpleo/OfertForm";
 //Hook
-import { useJobOfferStore } from "../../Stores/JobOfferStore";
+import { useJobOfferStore } from "../Stores/JobOfferStore";
 
 //componente de react
-export function OfertView() {
+export function OfferView() {
 	const [toggleForm, setToggleForm] = useState(false);
 	const { getAllOffers, loading, error } = useJobOfferStore();
 

@@ -1,17 +1,28 @@
-import { Aside } from "./Components/CommonComponents/Aside";
-import { Navbar } from "./Components/CommonComponents/Navbar.1";
-import { OfertView } from "./Components/OfertaDeEmpleo/Index";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LayoutPrincipal from "./Layout/LayoutPrincipal";
+import { OfferView } from "./Pages/OfferView";
+import { Login } from "./Pages/Login";
+import { Register } from "./Pages/Register";
 
-function App() {
+export default function App() {
 	return (
-		<main className='w-screen h-screen overflow-x-hidden bg-slate-100 flex flex-col'>
-			<Navbar />
-			<main className='flex h-full '>
-				<Aside />
-				<OfertView />
-			</main>
-		</main>
+		<Router>
+			<Routes>
+				{/* Rutas sin layout */}
+				<Route path='/login' element={<Login />} />
+				<Route path='/register' element={<Register />} />
+
+				{/* Rutas con layout */}
+				<Route
+					path='/'
+					element={
+						<LayoutPrincipal>
+							<OfferView />
+						</LayoutPrincipal>
+					}
+				/>
+				{/* Agrega más rutas con layout aquí */}
+			</Routes>
+		</Router>
 	);
 }
-
-export default App;
