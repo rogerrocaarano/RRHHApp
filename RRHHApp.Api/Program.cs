@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RRHHApp.Api.Application.Interfaces;
 using RRHHApp.Api.Application.Services;
+using RRHHApp.Api.Domain.Entities;
 using RRHHApp.Api.Domain.Repositories;
 using RRHHApp.Api.Domain.Services;
 using RRHHApp.Api.Infraestructure.Persistence;
+using RRHHApp.Api.Infraestructure.Persistence.EF;
 using RRHHApp.Api.Infraestructure.Persistence.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +19,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 // Add repositories
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+builder.Services.AddIdentity<User, UserRole>(options => 
+        options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddSingleton<IJobOfferRepository, MemJobOfferRepository>();
 builder.Services.AddSingleton<IJobOfferReviewRepository, MemJobOfferReviewRepository>();
 
@@ -42,6 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors("AllowSpecificOrigin");
 app.MapControllers();
 app.UseHttpsRedirection();

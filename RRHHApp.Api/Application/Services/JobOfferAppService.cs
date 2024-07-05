@@ -36,8 +36,8 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
             Budget = createJobOfferDto.Budget,
             Status = "Pending approval",
             Requirements = new List<JobRequirement>(),
-            Reviews = new List<JobOfferReview>(),
-            Applies = new List<JobApply>()
+            // Reviews = new List<JobOfferReview>(),
+            // Applies = new List<JobApply>()
         };
     }
     
