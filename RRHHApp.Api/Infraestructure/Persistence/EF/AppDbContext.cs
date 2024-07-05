@@ -18,7 +18,6 @@ public class AppDbContext : IdentityDbContext<User, UserRole, string>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        // modelBuilder.Entity<DisplayFormatAttribute>().HasNoKey();
     }
     
 }
