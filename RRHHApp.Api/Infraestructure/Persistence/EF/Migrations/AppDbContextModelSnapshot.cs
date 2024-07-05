@@ -180,7 +180,7 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
 
                     b.HasIndex("JobOfferId");
 
-                    b.ToTable("JobRequirement");
+                    b.ToTable("JobRequirements");
                 });
 
             modelBuilder.Entity("RRHHApp.Api.Domain.Entities.User", b =>

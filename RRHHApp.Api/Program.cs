@@ -28,15 +28,15 @@ builder.Services.AddIdentity<User, UserRole>(options =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IJobOfferRepository, MemJobOfferRepository>();
-builder.Services.AddSingleton<IJobOfferReviewRepository, MemJobOfferReviewRepository>();
+builder.Services.AddScoped<IJobOfferRepository, EfJobOfferRepository>();
+builder.Services.AddScoped<IJobOfferReviewRepository, MemJobOfferReviewRepository>();
 
 // Add domain services
-builder.Services.AddSingleton<JobOfferService>();
-builder.Services.AddSingleton<JobOfferService>();
+builder.Services.AddScoped<JobOfferService>();
+builder.Services.AddScoped<JobOfferService>();
 
 // Add Application services
-builder.Services.AddSingleton<IJobOfferAppService, JobOfferAppService>();
+builder.Services.AddScoped<IJobOfferAppService, JobOfferAppService>();
 
 // Configuring CORS
 builder.Services.AddCors(options =>

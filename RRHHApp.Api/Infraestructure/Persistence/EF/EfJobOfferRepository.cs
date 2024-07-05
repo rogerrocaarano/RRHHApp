@@ -1,4 +1,5 @@
-﻿using RRHHApp.Api.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RRHHApp.Api.Domain.Entities;
 using RRHHApp.Api.Domain.Repositories;
 
 namespace RRHHApp.Api.Infraestructure.Persistence.EF;
@@ -8,17 +9,21 @@ public class EfJobOfferRepository(AppDbContext context) : IJobOfferRepository
     private readonly AppDbContext _context = context;
     public async Task<JobOffer?> GetById(Guid id)
     {
-        throw new NotImplementedException();
+        var jobOffer = await _context.JobOffers.FindAsync(id);
+        return jobOffer;
     }
 
     public async Task<List<JobOffer>> GetAll()
     {
-        throw new NotImplementedException();
+        var jobOffers = await _context.JobOffers.ToListAsync();
+        return jobOffers;
     }
 
     public async Task<JobOffer?> Add(JobOffer jobOffer)
     {
-        throw new NotImplementedException();
+        await _context.JobOffers.AddAsync(jobOffer);
+        await _context.SaveChangesAsync();
+        return await GetById(jobOffer.Id);
     }
 
     public async Task<JobOffer> Update(JobOffer jobOffer)
@@ -33,16 +38,20 @@ public class EfJobOfferRepository(AppDbContext context) : IJobOfferRepository
 
     public async Task<JobRequirement?> AddRequirement(JobRequirement jobRequirement)
     {
-        throw new NotImplementedException();
+        await _context.JobRequirements.AddAsync(jobRequirement);
+        await _context.SaveChangesAsync();
+        return await _context.JobRequirements.FindAsync(jobRequirement.Id);
     }
 
     public async Task<JobRequirement?> GetRequirement(Guid requirementId)
     {
-        throw new NotImplementedException();
+        var jobRequirement = await _context.JobRequirements.FindAsync(requirementId);
+        return jobRequirement;
     }
 
     public async Task<List<JobRequirement>> GetAllRequirements(Guid jobOfferId)
     {
-        throw new NotImplementedException();
+        var jobRequirements = await _context.JobRequirements.Where(jr => jr.JobOfferId == jobOfferId).ToListAsync();
+        return jobRequirements;
     }
 }

@@ -11,7 +11,7 @@ using RRHHApp.Api.Infraestructure.Persistence.EF;
 namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240705030420_InitialCreate")]
+    [Migration("20240705035605_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -183,7 +183,7 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
 
                     b.HasIndex("JobOfferId");
 
-                    b.ToTable("JobRequirement");
+                    b.ToTable("JobRequirements");
                 });
 
             modelBuilder.Entity("RRHHApp.Api.Domain.Entities.User", b =>

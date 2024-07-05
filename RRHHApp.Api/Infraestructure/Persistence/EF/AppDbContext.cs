@@ -8,6 +8,7 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF;
 public class AppDbContext : IdentityDbContext<User, UserRole, string>
 {
     public DbSet<JobOffer> JobOffers { get; set; }
+    public DbSet<JobRequirement> JobRequirements { get; set; }
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

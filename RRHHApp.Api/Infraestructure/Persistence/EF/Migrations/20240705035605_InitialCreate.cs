@@ -181,7 +181,7 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobRequirement",
+                name: "JobRequirements",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -192,9 +192,9 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobRequirement", x => x.Id);
+                    table.PrimaryKey("PK_JobRequirements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobRequirement_JobOffers_JobOfferId",
+                        name: "FK_JobRequirements_JobOffers_JobOfferId",
                         column: x => x.JobOfferId,
                         principalTable: "JobOffers",
                         principalColumn: "Id",
@@ -239,8 +239,8 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobRequirement_JobOfferId",
-                table: "JobRequirement",
+                name: "IX_JobRequirements_JobOfferId",
+                table: "JobRequirements",
                 column: "JobOfferId");
         }
 
@@ -263,7 +263,7 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "JobRequirement");
+                name: "JobRequirements");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
