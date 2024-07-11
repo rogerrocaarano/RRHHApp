@@ -206,11 +206,9 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("IdDocument")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
@@ -220,7 +218,6 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -232,11 +229,9 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
