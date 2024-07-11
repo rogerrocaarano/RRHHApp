@@ -5,24 +5,24 @@ import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 
 export default function App() {
-	return (
-		<Router>
-			<Routes>
-				{/* Rutas sin layout */}
-				<Route path='/login' element={<Login />} />
-				<Route path='/register' element={<Register />} />
+  return (
+    <Router>
+      <Routes>
+        {/* Rutas sin layout */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-				{/* Rutas con layout */}
-				<Route
-					path='/'
-					element={
-						<LayoutPrincipal>
-							<OfferView />
-						</LayoutPrincipal>
-					}
-				/>
-				{/* Agrega más rutas con layout aquí */}
-			</Routes>
-		</Router>
-	);
+        {/* Rutas con layout */}
+        <Route
+          path="/"
+          element={
+            <LayoutPrincipal>
+              <OfferView />
+            </LayoutPrincipal>
+          }
+        />
+        {/* Agrega más rutas con layout aquí */}
+      </Routes>
+    </Router>
+  );
 }
