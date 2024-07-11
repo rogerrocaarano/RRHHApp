@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <Folder Include="Infraestructure\ExternalServices\" />
+      <Folder Include="Infraestructure\Persistence\EF\Migrations\" />
     </ItemGroup>
 
 </Project>
