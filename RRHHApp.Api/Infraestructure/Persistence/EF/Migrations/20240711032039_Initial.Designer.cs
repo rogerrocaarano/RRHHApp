@@ -11,8 +11,8 @@ using RRHHApp.Api.Infraestructure.Persistence.EF;
 namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240705035605_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240711032039_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,11 +209,9 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("IdDocument")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
@@ -223,7 +221,6 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -235,11 +232,9 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
