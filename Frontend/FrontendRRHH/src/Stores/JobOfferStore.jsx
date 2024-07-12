@@ -1,8 +1,14 @@
 import create from "zustand";
-import { getOffers, createOffer } from "../Services/JobOffersService";
+import {
+	getOffers,
+	createOffer,
+	getOneOffer,
+	updateOffer,
+} from "../Services/JobOffersService";
 
 export const useJobOfferStore = create((set, get) => ({
 	allOffers: [],
+	selectOffer: {},
 	loading: false,
 	error: null,
 	pendingOffers: [],
@@ -36,5 +42,31 @@ export const useJobOfferStore = create((set, get) => ({
 		);
 		pendings.reverse();
 		set({ pendingOffers: pendings });
+	},
+	getSelectOffer: async (offerId) => {
+		set({ loading: true });
+		try {
+			const response = await getOneOffer(offerId);
+			set({ selectOffer: response });
+		} catch (error) {
+			set({ error: error });
+		} finally {
+			set({ loading: false });
+		}
+	},
+	editOffer: async (offerToEdit) => {
+		set({ loading: true });
+		try {
+			await updateOffer(offerToEdit);
+			get().getAllOffers();
+			return "succes";
+		} catch (error) {
+			set({ error: error });
+		} finally {
+			set({ loading: false });
+		}
+	},
+	removeSelectOffer: () => {
+		set({ selectOffer: {} });
 	},
 }));
