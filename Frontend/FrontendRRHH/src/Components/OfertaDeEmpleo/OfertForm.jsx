@@ -1,48 +1,73 @@
+/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
-/* eslint-disable react/prop-types */
-import { JobOffersHandler } from "../../hooks/jobOffersHandler";
+//Store
+import { useJobOfferStore } from "../../Stores/JobOfferStore";
+//icons
+import { CloseIcon } from "../../assets/icons/CloseIcon";
+// PopUp de exito o error
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+/* eslint-disable react/prop-types */
 export function OfertForm({ toggleFunction }) {
-	const { createOfferHandler } = JobOffersHandler();
+	//Guarda el valor del dia de creacion para setearlo en el formulario como valor default
 	const currentDate = new Date().toISOString().split("T")[0];
+	//accede a las funciones del Hook de manejo de Ofertas
+	const { createNewOffer } = useJobOfferStore();
+
+	//Seteo del Hook-Form -> manejador del formulario
 	const {
 		register,
 		handleSubmit,
 		reset,
 		watch,
-		formState: { errors },
-		formState: { isDirty },
+		formState: { errors, isDirty }, // Desestructuramos 'formState' una sola vez
 	} = useForm({
 		defaultValues: {
-			PublishedDate: currentDate,
+			publishedDate: currentDate,
 		},
 	});
 
-	//observa el valor de la fehca de publicacion para no poder usar fechas anteriores
-	const publishedDate = watch("PublishedDate");
+	// Observa el valor de la fecha de publicación para no poder usar fechas anteriores
+	const publishedDate = watch("publishedDate");
 
 	const onSubmitNewOferr = async (newData) => {
 		console.log(newData);
-		createOfferHandler(newData);
-		// poner neuva fn del hook
+		const wasSucces = await createNewOffer(newData);
+		// Poner nueva función del hook
+
+		wasSucces == "succes"
+			? toast.success("La oferta fue cargada con éxito")
+			: toast.error(
+					"Tuvimos problemas crear tu oferta, vuelve a intentar mas tarde por favor"
+			  );
 		reset();
-		// toggleFunction() -> Cierra el formulario
+		toggleFunction(); // Cierra el formulario
 	};
 
 	return (
-		<main className=' w-full h-screen flex justify-center items-center'>
+		<main className=' w-full h-full flex justify-center items-center'>
 			<form
-				className=' bg-zinc-100 z-20 flex flex-col gap-4 h-[450px] overflow-y-scroll p-6 w-[50%] ml-[10%] rounded-xl'
+				className=' bg-zinc-100 z-20 flex flex-col gap-4 h-[90%] overflow-y-scroll p-6 w-[50%] ml-[10%] rounded-xl'
 				onSubmit={handleSubmit(onSubmitNewOferr)}
 			>
-				<h2 className='text-xl font-bold flex justify-center mb-6'>
-					Crear Oferta{" "}
-				</h2>
+				<div className='flex justify-between items-center'>
+					<h2 className='text-xl font-bold flex justify-center mb-6'>
+						Crear Oferta{" "}
+					</h2>
+					<div className='-mt-10' onClick={toggleFunction}>
+						<CloseIcon
+							className={
+								"text-blue-500 hover:cursor-pointer hover:text-blue-700"
+							}
+						/>
+					</div>
+				</div>
 				{/* title */}
 				<div className='flex justify-around gap-4'>
 					<label
 						className='w-1/3 text-base font-semibold border-b-2 border-zinc-900'
-						htmlFor='Title'
+						htmlFor='title'
 					>
 						{" "}
 						Titulo{" "}
@@ -50,7 +75,7 @@ export function OfertForm({ toggleFunction }) {
 					<input
 						className='w-2/3 rounded-xl pl-4'
 						type='text'
-						{...register("Title", {
+						{...register("title", {
 							required: {
 								value: true,
 								message: "Debes completar el campo",
@@ -62,21 +87,21 @@ export function OfertForm({ toggleFunction }) {
 						})}
 					/>
 				</div>
-				{errors.Title && (
+				{errors.title && (
 					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
-						{errors.Title.message}
+						{errors.title.message}
 					</span>
 				)}
 
 				{/* descripcion */}
-				<label className='-mb-4' htmlFor='Description'>
+				<label className='-mb-4' htmlFor='description'>
 					{" "}
 					Descripción{" "}
 				</label>
 				<textarea
 					type='text'
 					className='rounded-xl px-6 py-1'
-					{...register("Description", {
+					{...register("description", {
 						required: {
 							value: true,
 							message: "Debes completar el campo",
@@ -87,9 +112,9 @@ export function OfertForm({ toggleFunction }) {
 						},
 					})}
 				/>
-				{errors.Description && (
+				{errors.description && (
 					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
-						{errors.Description.message}
+						{errors.description.message}
 					</span>
 				)}
 
@@ -97,7 +122,7 @@ export function OfertForm({ toggleFunction }) {
 				<div className='flex justify-around gap-4'>
 					<label
 						className='w-1/3 text-base py-1 mt-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='PublishedDate'
+						htmlFor='publishedDate'
 					>
 						{" "}
 						Fecha de Publicación{" "}
@@ -105,7 +130,7 @@ export function OfertForm({ toggleFunction }) {
 					<input
 						className='w-2/3 rounded-xl  pl-36'
 						type='date'
-						{...register("PublishedDate")}
+						{...register("publishedDate")}
 						disabled
 					/>
 				</div>
@@ -114,7 +139,7 @@ export function OfertForm({ toggleFunction }) {
 				<div className='flex justify-around gap-4'>
 					<label
 						className='w-1/3 text-base py-1 mt-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='ExpirationDate'
+						htmlFor='expirationDate'
 					>
 						{" "}
 						Fecha de Expiración{" "}
@@ -122,7 +147,7 @@ export function OfertForm({ toggleFunction }) {
 					<input
 						className='w-2/3 rounded-xl flex pl-36'
 						type='date'
-						{...register("ExpirationDate", {
+						{...register("expirationDate", {
 							required: {
 								value: true,
 								message: "Debes completar el campo",
@@ -134,13 +159,13 @@ export function OfertForm({ toggleFunction }) {
 						})}
 					/>
 				</div>
-				{errors.ExpirationDate && (
+				{errors.expirationDate && (
 					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
-						{errors.ExpirationDate.message}
+						{errors.expirationDate.message}
 					</span>
 				)}
 				{/* Fecha de Edicion - Solo cunado se edite  */}
-
+				{/* HABILITAR CUANDO SE CREE LA POSIBILIDAD DE EDITAR
 				<div className='flex justify-around gap-4'>
 					<label
 						className='w-1/3 text-base py-1 mt-2 font-semibold border-b-2 border-zinc-900'
@@ -164,14 +189,14 @@ export function OfertForm({ toggleFunction }) {
 					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
 						{errors.LastUpdatedDate.message}
 					</span>
-				)}
+				)} */}
 
 				{/* Presupuesto - solo recibe numeros*/}
 
 				<div className='flex justify-around gap-4'>
 					<label
 						className='w-1/3 text-base py-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='Budget'
+						htmlFor='budget'
 					>
 						{" "}
 						Presupuesto{" "}
@@ -179,22 +204,21 @@ export function OfertForm({ toggleFunction }) {
 					<input
 						className='w-2/3 rounded-xl pl-4'
 						type='text'
-						{...register("Budget", {
+						{...register("budget", {
 							required: {
 								value: true,
-								message:
-									"Debes completar el campo, aqui tienes un ejemplo: 890 Euros",
+								message: "Debe completar el campo",
 							},
 							pattern: {
-								value: /\d/,
-								message: "Debe contener al menos un número",
+								value: /^\d+$/,
+								message: "Solo se permiten números",
 							},
 						})}
 					/>
 				</div>
-				{errors.Budget && (
+				{errors.budget && (
 					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
-						{errors.Budget.message}
+						{errors.budget.message}
 					</span>
 				)}
 
@@ -202,7 +226,7 @@ export function OfertForm({ toggleFunction }) {
 				<div className='flex justify-start gap-4'>
 					<label
 						className='w-fit text-base py-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='DisplayBudget'
+						htmlFor='displayBudget'
 					>
 						{" "}
 						Hacer visible el Presupuesto{" "}
@@ -210,12 +234,12 @@ export function OfertForm({ toggleFunction }) {
 					<input
 						className='size-6 my-auto rounded-xl'
 						type='checkbox'
-						{...register("DisplayBudget")}
+						{...register("displayBudget")}
 					/>
 				</div>
 
-				{/* Estado de la Oferta - deberia ser un select ?*/}
-				<div className='flex justify-around gap-4'>
+				{/* Estado de la Oferta - Ver si hace falta utilizar en algun caso*/}
+				{/* <div className='flex justify-around gap-4'>
 					<label
 						className='w-1/3 text-base py-2 font-semibold border-b-2 border-zinc-900'
 						htmlFor='Status'
@@ -233,67 +257,16 @@ export function OfertForm({ toggleFunction }) {
 						<option value='Approval'>Activa</option>
 						<option value='Close'>Cerrada</option>
 					</select>
-				</div>
-
-				{/* Creada por  */}
-				<div className='flex justify-around gap-4'>
-					<label
-						className='w-1/3 text-base py-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='CreatedBy'
-					>
-						{" "}
-						Creada por :{" "}
-					</label>
-					<input
-						className='w-2/3 rounded-xl pl-4'
-						type='text'
-						{...register("CreatedBy", {
-							required: {
-								value: true,
-								message: "Debes completar el campo",
-							},
-						})}
-					/>
-				</div>
-				{errors.CreatedBy && (
-					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
-						{errors.CreatedBy.message}
-					</span>
-				)}
-				{/* Aprovada por - solo disponible para quien tenga permismos de aprovacion */}
-				{/* <div className='flex justify-around gap-4'>
-					<label
-						className='w-1/3 text-base py-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='ApprovedBy'
-					>
-						{" "}
-						Aprovada por :{" "}
-					</label>
-					<input
-						className='w-2/3 rounded-xl'
-						type='text'
-						{...register("ApprovedBy", {
-							required: {
-								value: true,
-								message: "Debes completar el campo",
-							},
-						})}
-					/>
 				</div> */}
-				{errors.ApprovedBy && (
-					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
-						{errors.ApprovedBy.message}
-					</span>
-				)}
 
 				{/* Hay que trabajar la lista de requerimientos y la lista de personas que han aplicado... aunque esta ultima no tienen tanto que ver en el formulario */}
 
-				{/* Revisiones - Solo disponible para quien tenga credenciales de aprobacion */}
-				<label htmlFor='Revision' className='-mb-4'>
+				{/* Revisiones - Solo disponible para utilizar quien tenga credenciales de aprobacion, y que sea visual en editar para el reclutador */}
+				{/* <label htmlFor='Revision' className='-mb-4'>
 					{" "}
 					Revisiones{" "}
 				</label>
-				<textarea type='text' className='rounded-xl px-6 py-1' />
+				<textarea type='text' className='rounded-xl px-6 py-1' /> */}
 				<div className='w-full flex justify-around p-2 m-4'>
 					{/* Guardar/editar -> para quien la crea -> Enviar Revision/Aceptar para quien tenga permisos */}
 					<button
