@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
 import { UserStore } from "../../Stores/userStore";
+//importo componentes botones
+import { RedButton } from "../CommonComponents/RedButton";
+import { BlueButton } from "../CommonComponents/BlueButton";
+import { GreenButton } from "../CommonComponents/GreenButton";
 
 export function OfertCard({ isPending, review, title, postulate }) {
 	// isPending y postulate son booleanos, review puede recibir un String, y title es un String.
@@ -13,31 +17,30 @@ export function OfertCard({ isPending, review, title, postulate }) {
 				{userLogged.role !== "Candidate" ? (
 					//seccion solo si no se es candidato, muestra cards activas y pendientes, depende la seccion que lo consuma
 					!isPending ? (
+						//ofertas activas
 						<>
-							<button className='border-2 shadow-lg h-full rounded-xl border-red-600 text-red-500 text-sm hover:bg-red-200 hover:text-red-800 hover:cursor-pointer hover:font-semibold transition-all duration-300 py-1 px-4 '>
-								Delete
-							</button>
-							<button className='border-2 shadow-lg h-full rounded-xl border-blue-600 text-blue-500 text-sm hover:bg-blue-200 hover:text-blue-800 hover:cursor-pointer hover:font-semibold transition-all duration-300 py-1 px-4 '>
-								Cerrar Oferta
-							</button>
+							<RedButton buttonContent={"Delete"} />
+							<BlueButton buttonContent={"Cerrar Oferta"} />
 						</>
 					) : !review ? (
-						<button className='border-2 shadow-lg h-full rounded-xl border-red-600 text-red-500 text-sm hover:bg-red-200 hover:text-red-800 hover:cursor-pointer hover:font-semibold transition-all duration-300 py-1 px-4 '>
-							Retirar Oferta
-						</button>
+						//ofertas pendientes
+						<>
+							<RedButton buttonContent={"Retirar Oferta"} />
+
+							{userLogged.role === "Recrutier" ? (
+								<GreenButton buttonContent={"Editar ofer sin revision"} />
+							) : (
+								<GreenButton buttonContent={"Revisar"} />
+							)}
+						</>
 					) : (
-						<button className='border-2 shadow-lg h-full rounded-xl border-green-600 text-green-500 text-sm hover:bg-green-200 hover:text-green-800 hover:cursor-pointer hover:font-semibold transition-all duration-300 py-1 px-4 '>
-							Ver Revisión
-						</button>
+						<GreenButton buttonContent={"Ver Revisión"} />
 					)
 				) : !postulate ? (
-					<button className='border-2 shadow-lg h-full rounded-xl border-green-600 text-green-500 text-sm hover:bg-green-200 hover:text-green-800 hover:cursor-pointer hover:font-semibold transition-all duration-300 py-1 px-4 '>
-						Ver Oferta
-					</button>
+					//SOLO muestra si esta logeado el candidato
+					<GreenButton buttonContent={"Ver Oferta"} />
 				) : (
-					<button className='border-2 shadow-lg h-full rounded-xl border-red-600 text-red-500 text-sm hover:bg-red-200 hover:text-red-800 hover:cursor-pointer hover:font-semibold transition-all duration-300 py-1 px-4 '>
-						Retirar Postulación
-					</button>
+					<RedButton buttonContent={"Retirar Postulación"} />
 				)}
 			</div>
 		</article>
