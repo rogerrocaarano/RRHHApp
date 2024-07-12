@@ -1,11 +1,11 @@
-import { api } from "./BaseApi";
+import { apiJobs } from "./BaseApi";
 
 //Servicio de manejo de APi sobre Ofertas
 
 //Traer todas las Offertas
 export const getOffers = async () => {
 	try {
-		const { data } = await api.get("/");
+		const { data } = await apiJobs.get("/");
 		console.log("Response de oferta", data);
 		return data;
 	} catch (err) {
@@ -16,7 +16,7 @@ export const getOffers = async () => {
 //Crear Oferta
 export const createOffer = async (newOffer) => {
 	try {
-		const { data } = await api.post("/Create", newOffer);
+		const { data } = await apiJobs.post("/Create", newOffer);
 		console.log("Response de oferta", data);
 	} catch (err) {
 		console.log("Error al crear Oferta:", err);

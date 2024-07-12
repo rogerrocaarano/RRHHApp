@@ -47,9 +47,9 @@ public class JobOffersController(IJobOfferAppService jobOfferAppService) : Contr
     }
     
     [HttpPost("AddRequirement")]
-    public async Task<ActionResult> AddRequirement([FromBody] JobOfferRequirementDto jobOfferRequirementDto)
+    public async Task<ActionResult> AddRequirement([FromBody] CreateJobOfferRequirementDto jobOfferRequirementDto)
     {
-        // await _jobOfferAppService.AddRequirement(jobOfferRequirementDto.JobOfferId, jobOfferRequirementDto);
+        await _jobOfferAppService.AddRequirement(jobOfferRequirementDto);
         return Ok();
     }
 }

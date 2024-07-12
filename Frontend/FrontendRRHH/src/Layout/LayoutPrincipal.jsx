@@ -4,9 +4,12 @@ import { Navbar } from "../Components/CommonComponents/Navbar.1";
 
 function LayoutPrincipal({ children }) {
 	return (
-		<main className='w-screen h-screen overflow-x-hidden bg-slate-100 flex flex-col'>
+		<main className='w-screen  bg-slate-100 flex flex-col'>
 			<Navbar />
-			<main className='flex h-full '>
+			<main
+				className='flex overflow-hidden'
+				style={{ height: "calc(100vh - 4rem)" }}
+			>
 				<Aside />
 				{children}
 			</main>

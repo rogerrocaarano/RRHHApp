@@ -1,7 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
+//Store
 import { useJobOfferStore } from "../../Stores/JobOfferStore";
+//icons
 import { CloseIcon } from "../../assets/icons/CloseIcon";
+// PopUp de exito o error
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /* eslint-disable react/prop-types */
 export function OfertForm({ toggleFunction }) {
@@ -28,8 +33,14 @@ export function OfertForm({ toggleFunction }) {
 
 	const onSubmitNewOferr = async (newData) => {
 		console.log(newData);
-		await createNewOffer(newData);
+		const wasSucces = await createNewOffer(newData);
 		// Poner nueva función del hook
+
+		wasSucces == "succes"
+			? toast.success("La oferta fue cargada con éxito")
+			: toast.error(
+					"Tuvimos problemas crear tu oferta, vuelve a intentar mas tarde por favor"
+			  );
 		reset();
 		toggleFunction(); // Cierra el formulario
 	};
