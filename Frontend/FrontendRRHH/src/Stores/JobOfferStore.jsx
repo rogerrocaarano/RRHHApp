@@ -22,6 +22,7 @@ export const useJobOfferStore = create((set, get) => ({
 		try {
 			await createOffer(newOffer);
 			get().getAllOffers();
+			return "succes";
 		} catch (error) {
 			set({ error: error });
 		} finally {

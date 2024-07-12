@@ -1,13 +1,17 @@
 /* import React from 'react'; */
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { UserStore } from "../Stores/userStore";
 import { Navbar } from "../Components/CommonComponents/Navbar.1";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //iconos
 import { EyeClose } from "../assets/icons/EyeClose";
 import { EyeOpen } from "../assets/icons/EyeOpen";
 export function Login() {
 	const [showPassword, setShowPassword] = useState(false);
+	const navigate = useNavigate();
 	const { loginUserRequest } = UserStore();
 	const {
 		register,
@@ -17,13 +21,21 @@ export function Login() {
 
 	const onSubmit = async (data) => {
 		// console.log("data al enviar formulario", data);
-		loginUserRequest(data);
+		try {
+			const wasSucces = await loginUserRequest(data);
+			wasSucces == "succes" && toast.success("Usuario Logeado con exito");
+			navigate("/");
+		} catch (error) {
+			toast.error(
+				"Tuvimos problemas al intentar Loegarte, por favor vuelve a intentar mas tarde"
+			);
+		}
 	};
 
 	return (
 		<>
 			<Navbar />
-			<div className='w-screen h-screen flex justify-center items-center border-2'>
+			<div className='w-screen h-screen flex flex-col justify-center items-center border-2'>
 				<form
 					className='bg-zinc-100 flex flex-col gap-4 overflow-y-scroll p-6 w-[40%] h-fit rounded-xl'
 					onSubmit={handleSubmit(onSubmit)}
@@ -105,6 +117,15 @@ export function Login() {
 						Enviar
 					</button>
 				</form>
+				<div className='h-24 flex justify-between items-center gap-4'>
+					<span className='  '> ¿ No tiene cuenta ?</span>
+					<button
+						className=' hover:text-blue-500 hover:cursor-pointer '
+						onClick={() => navigate("/register")}
+					>
+						Registrate aquí
+					</button>
+				</div>
 			</div>
 		</>
 	);

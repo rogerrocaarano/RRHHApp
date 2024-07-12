@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../Components/CommonComponents/Navbar.1";
 import { registerUser } from "../Services/UserService";
+// PopUp de exito o error
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //iconos
@@ -44,7 +45,7 @@ export function Register() {
 			<Navbar />
 			<div className='w-full h-screen flex justify-center items-center'>
 				<form
-					className=' bg-zinc-100 z-20 flex flex-col gap-4 h-fit overflow-y-scroll p-6 w-[50%] ml-[10%] rounded-xl'
+					className=' bg-zinc-100 flex flex-col gap-4 h-fit overflow-y-scroll p-6 w-[50%] rounded-xl'
 					onSubmit={onSubmit}
 				>
 					{/*Correo*/}

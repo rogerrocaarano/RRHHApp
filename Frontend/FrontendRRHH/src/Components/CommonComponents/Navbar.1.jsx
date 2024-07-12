@@ -7,7 +7,7 @@ export function Navbar() {
 	const pathSegments = pathname.split("/"); // Divide el pathname en segmentos
 	const lastSegment = pathSegments[pathSegments.length - 1]; // Obtiene el último segmento del path;
 	return (
-		<nav className='bg-blue-800 p-4 w-full '>
+		<nav className='bg-blue-800 p-4 w-full max-h-16'>
 			<div className='container mx-auto flex justify-between items-center'>
 				{/* Left Section */}
 				<div className='flex items-center space-x-4'>
@@ -17,7 +17,7 @@ export function Navbar() {
 							alt='Logo'
 							className='h-8 w-8 rounded-full'
 						/> */}
-						<span className='text-white ml-2 hover:cursor-pointer'>
+						<span className='text-white ml-2 hover:cursor-pointer '>
 							{" "}
 							<Link to={"/"}> RRHHapp</Link>
 						</span>
@@ -25,7 +25,7 @@ export function Navbar() {
 				</div>
 
 				{/* Center Section */}
-				<div className='text-white'>
+				<div className='text-white text-2xl'>
 					{lastSegment ? lastSegment : " Ofertas de empleo"}
 				</div>
 
