@@ -12,7 +12,7 @@ export function SecOfertas({ statusOfer }) {
 		getPenndinOffers();
 	}, [allOffers]);
 
-	const offers =
+	const offers = //segun el status, en offer habra ofertas pendientes, o ofertas aprobadas
 		statusOfer === "Pending"
 			? pendingOffers
 			: allOffers.filter((off) => off.status === "Approval");
@@ -29,6 +29,7 @@ export function SecOfertas({ statusOfer }) {
 				) : (
 					//Se envia el estado de pendiente o no a cada oferta, y si tiene revision. Ambos Booleanos.
 					//Si es pendin se mostrara en la seccion de pendientes, sino en activas
+
 					<>
 						<OfertCard
 							title='Busqueda de Desarrollador Frontend'
@@ -48,6 +49,15 @@ export function SecOfertas({ statusOfer }) {
 					</>
 				)
 			) : statusOfer == "Active" ? (
+				//DESCOMENTAR BLOQUE CUANDO HAYA OFERTAS APROBADAS
+				// offers?.length >= 1 ? (
+				// 	offers
+				// 		.reverse()
+				// 		.map((offer) => (
+				// 			<OfertCard key={offer.id} title={offer.title} isPending={true} />
+				// 		))
+
+				//ELIMINAR LO DE ABAJO CUANDO HAYA OFERTAS APROBADAS
 				<>
 					<OfertCard
 						title='Busqueda de Desarrollador Frontend'

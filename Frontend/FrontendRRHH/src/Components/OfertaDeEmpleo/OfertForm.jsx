@@ -1,7 +1,10 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
 //Store
 import { useJobOfferStore } from "../../Stores/JobOfferStore";
+//hooks
+
 //icons
 import { CloseIcon } from "../../assets/icons/CloseIcon";
 // PopUp de exito o error
@@ -9,13 +12,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 /* eslint-disable react/prop-types */
-export function OfertForm({ toggleFunction }) {
+export function OfertForm({ toggleJobFormModal, selectOffer }) {
 	//Guarda el valor del dia de creacion para setearlo en el formulario como valor default
 	const currentDate = new Date().toISOString().split("T")[0];
 	//accede a las funciones del Hook de manejo de Ofertas
-	const { createNewOffer } = useJobOfferStore();
-
+	const { createNewOffer, removeSelectOffer, editOffer } = useJobOfferStore();
 	//Seteo del Hook-Form -> manejador del formulario
+
 	const {
 		register,
 		handleSubmit,
@@ -24,7 +27,13 @@ export function OfertForm({ toggleFunction }) {
 		formState: { errors, isDirty }, // Desestructuramos 'formState' una sola vez
 	} = useForm({
 		defaultValues: {
-			publishedDate: currentDate,
+			budget: selectOffer && selectOffer.budget,
+			displayBudget: selectOffer && selectOffer.displayBudget,
+			description: selectOffer && selectOffer.description,
+			expirationDate:
+				selectOffer.expirationDate && selectOffer.expirationDate.split("T")[0],
+			title: selectOffer && selectOffer.title,
+			publishedDate: selectOffer ? selectOffer.publishedDate : currentDate,
 		},
 	});
 
@@ -33,7 +42,10 @@ export function OfertForm({ toggleFunction }) {
 
 	const onSubmitNewOferr = async (newData) => {
 		console.log(newData);
-		const wasSucces = await createNewOffer(newData);
+		let wasSucces;
+		selectOffer
+			? (wasSucces = await createNewOffer(newData))
+			: (wasSucces = await editOffer(newData));
 		// Poner nueva función del hook
 
 		wasSucces == "succes"
@@ -42,7 +54,12 @@ export function OfertForm({ toggleFunction }) {
 					"Tuvimos problemas crear tu oferta, vuelve a intentar mas tarde por favor"
 			  );
 		reset();
-		toggleFunction(); // Cierra el formulario
+		toggleJobFormModal(); // Cierra el formulario
+	};
+
+	const closeModal = () => {
+		selectOffer.title && removeSelectOffer();
+		toggleJobFormModal();
 	};
 
 	return (
@@ -55,7 +72,7 @@ export function OfertForm({ toggleFunction }) {
 					<h2 className='text-xl font-bold flex justify-center mb-6'>
 						Crear Oferta{" "}
 					</h2>
-					<div className='-mt-10' onClick={toggleFunction}>
+					<div className='-mt-10' onClick={closeModal}>
 						<CloseIcon
 							className={
 								"text-blue-500 hover:cursor-pointer hover:text-blue-700"
@@ -164,32 +181,6 @@ export function OfertForm({ toggleFunction }) {
 						{errors.expirationDate.message}
 					</span>
 				)}
-				{/* Fecha de Edicion - Solo cunado se edite  */}
-				{/* HABILITAR CUANDO SE CREE LA POSIBILIDAD DE EDITAR
-				<div className='flex justify-around gap-4'>
-					<label
-						className='w-1/3 text-base py-1 mt-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='LastUpdatedDate'
-					>
-						{" "}
-						Fecha de Edicion{" "}
-					</label>
-					<input
-						className='w-2/3 rounded-xl flex pl-36'
-						type='date'
-						{...register("LastUpdatedDate", {
-							validate: (value) =>
-								!value ||
-								value >= publishedDate ||
-								"La fecha de edición no puede ser anterior o igual a la fecha de publicación",
-						})}
-					/>
-				</div>
-				{errors.LastUpdatedDate && (
-					<span className='pl-2 pb-2 w-full flex justify-center text-xs font-bold text-rose-900'>
-						{errors.LastUpdatedDate.message}
-					</span>
-				)} */}
 
 				{/* Presupuesto - solo recibe numeros*/}
 
@@ -238,27 +229,6 @@ export function OfertForm({ toggleFunction }) {
 					/>
 				</div>
 
-				{/* Estado de la Oferta - Ver si hace falta utilizar en algun caso*/}
-				{/* <div className='flex justify-around gap-4'>
-					<label
-						className='w-1/3 text-base py-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='Status'
-					>
-						{" "}
-						Estado de la Oferta{" "}
-					</label>
-					<select
-						className='w-2/3 rounded-xl pl-6'
-						type='text'
-						{...register("Status")}
-					>
-						<option value='Pending approval'>Pendiente</option>
-						<option value='InRevision'>En Revisión</option>
-						<option value='Approval'>Activa</option>
-						<option value='Close'>Cerrada</option>
-					</select>
-				</div> */}
-
 				{/* Hay que trabajar la lista de requerimientos y la lista de personas que han aplicado... aunque esta ultima no tienen tanto que ver en el formulario */}
 
 				{/* Revisiones - Solo disponible para utilizar quien tenga credenciales de aprobacion, y que sea visual en editar para el reclutador */}
@@ -276,7 +246,7 @@ export function OfertForm({ toggleFunction }) {
 						}`}
 						// disabled={!isDirty} REVISAR
 					>
-						Guardar
+						{selectOffer ? "Editar" : "Guardar"}
 					</button>
 					<button
 						className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer'
