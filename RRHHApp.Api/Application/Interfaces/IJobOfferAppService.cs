@@ -13,4 +13,6 @@ public interface IJobOfferAppService
     Task<JobOfferRequirementDto> AddRequirement(CreateJobOfferRequirementDto jobOfferRequirementDto);
     Task<List<JobOfferRequirementDto>> GetJobOfferRequirements(Guid jobOfferId);
     Task<JobOfferRequirementDto> GetJobOfferRequirement(Guid jobOfferId, Guid requirementId);
+    Task<JobOfferDto> GetPublishedJobOffer(Guid id);
+    Task<List<JobOfferDto>> GetPublishedJobOffers();
 }
