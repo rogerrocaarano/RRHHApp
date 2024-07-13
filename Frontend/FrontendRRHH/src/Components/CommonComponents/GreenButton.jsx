@@ -3,6 +3,7 @@
 
 //store
 import { useJobOfferStore } from "../../Stores/JobOfferStore";
+
 //component
 
 export function GreenButton({ buttonContent, offerId }) {

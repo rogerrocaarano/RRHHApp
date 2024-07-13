@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 //Store
 import { useJobOfferStore } from "../../Stores/JobOfferStore";
+import { UserStore } from "../../Stores/userStore";
 //hooks
 
 //icons
@@ -13,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 /* eslint-disable react/prop-types */
 export function OfertForm({ toggleJobFormModal, selectOffer }) {
+	const { userLogged } = UserStore();
 	//Guarda el valor del dia de creacion para setearlo en el formulario como valor default
 	const currentDate = new Date().toISOString().split("T")[0];
 	//accede a las funciones del Hook de manejo de Ofertas
@@ -62,6 +64,11 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 		toggleJobFormModal();
 	};
 
+	const apply = async () => {
+		//await applyToOffer(userLogged.id, selectOffer.id)
+		console.log("estas aplicando");
+	};
+
 	return (
 		<main className=' w-full h-full flex justify-center items-center'>
 			<form
@@ -92,6 +99,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='w-2/3 rounded-xl pl-4'
 						type='text'
+						disabled={userLogged.role === "Candidate" ? true : false}
 						{...register("title", {
 							required: {
 								value: true,
@@ -118,6 +126,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 				<textarea
 					type='text'
 					className='rounded-xl px-6 py-1'
+					disabled={userLogged.role === "Candidate" ? true : false}
 					{...register("description", {
 						required: {
 							value: true,
@@ -134,24 +143,6 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 						{errors.description.message}
 					</span>
 				)}
-
-				{/* Fecha de Publicacion  */}
-				<div className='flex justify-around gap-4'>
-					<label
-						className='w-1/3 text-base py-1 mt-2 font-semibold border-b-2 border-zinc-900'
-						htmlFor='publishedDate'
-					>
-						{" "}
-						Fecha de Publicación{" "}
-					</label>
-					<input
-						className='w-2/3 rounded-xl  pl-36'
-						type='date'
-						{...register("publishedDate")}
-						disabled
-					/>
-				</div>
-
 				{/* Fecha de Expiración  */}
 				<div className='flex justify-around gap-4'>
 					<label
@@ -164,6 +155,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='w-2/3 rounded-xl flex pl-36'
 						type='date'
+						disabled={userLogged.role === "Candidate" ? true : false}
 						{...register("expirationDate", {
 							required: {
 								value: true,
@@ -195,6 +187,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='w-2/3 rounded-xl pl-4'
 						type='text'
+						disabled={userLogged.role === "Candidate" ? true : false}
 						{...register("budget", {
 							required: {
 								value: true,
@@ -225,6 +218,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='size-6 my-auto rounded-xl'
 						type='checkbox'
+						disabled={userLogged.role === "Candidate" ? true : false}
 						{...register("displayBudget")}
 					/>
 				</div>
@@ -232,28 +226,52 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 				{/* Hay que trabajar la lista de requerimientos y la lista de personas que han aplicado... aunque esta ultima no tienen tanto que ver en el formulario */}
 
 				{/* Revisiones - Solo disponible para utilizar quien tenga credenciales de aprobacion, y que sea visual en editar para el reclutador */}
-				{/* <label htmlFor='Revision' className='-mb-4'>
-					{" "}
-					Revisiones{" "}
-				</label>
-				<textarea type='text' className='rounded-xl px-6 py-1' /> */}
+				{userLogged.role !== "Candidate" && (
+					<>
+						<label htmlFor='Revision' className='-mb-4'>
+							{" "}
+							Revisiones{" "}
+						</label>
+						<textarea
+							type='text'
+							className='rounded-xl px-6 py-1'
+							disabled={userLogged.role === "Recrutier" ? true : false}
+						/>
+					</>
+				)}
 				<div className='w-full flex justify-around p-2 m-4'>
 					{/* Guardar/editar -> para quien la crea -> Enviar Revision/Aceptar para quien tenga permisos */}
-					<button
-						type='submit'
-						className={`w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-500 bg-green-200/80 text-green-700 hover:border-green-200 hover:text-green-200 hover:bg-green-600 hover:cursor-pointer  ${
-							isDirty && "border-green-900 text-gray-500"
-						}`}
-						// disabled={!isDirty} REVISAR
-					>
-						{selectOffer ? "Editar" : "Guardar"}
-					</button>
-					<button
-						className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer'
-						onClick={() => reset()}
-					>
-						Resetear
-					</button>
+					{userLogged.role !== "Candidate" ? (
+						<button
+							type='submit'
+							className={`w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-500 bg-green-200/80 text-green-700 hover:border-green-200 hover:text-green-200 hover:bg-green-600 hover:cursor-pointer  ${
+								isDirty && "border-green-900 text-gray-500"
+							}`}
+							// disabled={!isDirty} REVISAR
+						>
+							{selectOffer.id
+								? "Guardar"
+								: userLogged.role === "Recrutier"
+								? "Editar"
+								: "Hacer Revisión"}
+						</button>
+					) : (
+						//Si el usuario es el candidato en el form solo puede aplicar
+						<button
+							className={`w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-500 bg-green-200/80 text-green-700 hover:border-green-200 hover:text-green-200 hover:bg-green-600 hover:cursor-pointer `}
+							onClick={apply}
+						>
+							Aplicar
+						</button>
+					)}
+					{userLogged.role !== "Candidate" && (
+						<button
+							className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer'
+							onClick={() => reset()}
+						>
+							Resetear
+						</button>
+					)}
 				</div>
 			</form>
 		</main>

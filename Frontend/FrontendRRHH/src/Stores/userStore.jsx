@@ -12,7 +12,7 @@ export const UserStore = create((set) => ({
 			const response = await loginUser(userToLog);
 			console.log("lo que viene del service al store", response);
 			// set({ userLogged: response });
-			set({ userLogged: { role: "Admin", ...userToLog } });
+			set({ userLogged: { role: "Candidate", ...userToLog } });
 			return "succes";
 		} catch (error) {
 			set({ error: error });
