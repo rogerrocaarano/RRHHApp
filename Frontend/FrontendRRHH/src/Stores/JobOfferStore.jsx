@@ -27,7 +27,7 @@ export const useJobOfferStore = create((set, get) => ({
 		set({ loading: true });
 		try {
 			await createOffer(newOffer);
-			get().getAllOffers();
+			get().getAllOffers(); //vuelve a pedir todas las ofertas
 			return "succes";
 		} catch (error) {
 			set({ error: error });
@@ -68,5 +68,20 @@ export const useJobOfferStore = create((set, get) => ({
 	},
 	removeSelectOffer: () => {
 		set({ selectOffer: {} });
+	},
+	deleteOffer: async (offerId) => {
+		console.log("se borraria la oferta con id", offerId);
+		// set({ loading: true });
+
+		// try {
+		// 	await deleteOfferReq(offerId); // No exitste, ponerle el nobre que correspnda
+		// 	get().getAllOffers(); //vuelve a pedir todas las ofertas
+		// 	return "La oferta se ha borrado con exito";
+		// } catch (err) {
+		// 	console.log("el error en la edicion fue", err);
+		// 	return err;
+		// } finally {
+		// 	set({ loading: true });
+		// }
 	},
 }));

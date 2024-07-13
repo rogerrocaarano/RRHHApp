@@ -19,18 +19,18 @@ export function OfertCard({ isPending, review, title, postulate, id }) {
 					!isPending ? (
 						//ofertas activas
 						<>
-							<RedButton buttonContent={"Delete"} />
-							<BlueButton buttonContent={"Cerrar Oferta"} />
+							<RedButton id buttonContent={"Delete"} />
+							<BlueButton id buttonContent={"Cerrar Oferta"} />
 						</>
 					) : !review ? (
 						//ofertas pendientes
 						<>
-							<RedButton buttonContent={"Retirar Oferta"} />
+							<RedButton id buttonContent={"Retirar Oferta"} />
 
 							{userLogged.role === "Recrutier" ? (
 								<GreenButton
 									offerId={id}
-									buttonContent={"Editar ofer sin revision"}
+									buttonContent={"Editar aún sin revision"}
 								/>
 							) : (
 								<GreenButton offerId={id} buttonContent={"Revisar"} />
@@ -43,7 +43,7 @@ export function OfertCard({ isPending, review, title, postulate, id }) {
 					//SOLO muestra si esta logeado el candidato
 					<GreenButton offerId={id} buttonContent={"Ver Oferta"} />
 				) : (
-					<RedButton buttonContent={"Retirar Postulación"} />
+					<RedButton id buttonContent={"Retirar Postulación"} />
 				)}
 			</div>
 		</article>
