@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using RRHHApp.Api.Application.Interfaces;
@@ -8,7 +9,9 @@ using RRHHApp.Api.Domain.Repositories;
 using RRHHApp.Api.Domain.Services;
 using RRHHApp.Api.Infraestructure.ExternalServices.MailKit;
 using RRHHApp.Api.Infraestructure.Persistence;
+using RRHHApp.Api.Infraestructure.Persistence.DbSeeder;
 using RRHHApp.Api.Infraestructure.Persistence.EF;
+using RRHHApp.Api.Infraestructure.Persistence.Identity;
 using RRHHApp.Api.Infraestructure.Persistence.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +29,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 
-
 // Email
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IEmailSender, MailService>();
@@ -35,6 +37,26 @@ builder.Services.AddIdentity<User, UserRole>(options => options.SignIn.RequireCo
     .AddEntityFrameworkStores<AppDbContext>()
     .AddApiEndpoints()
     .AddDefaultTokenProviders();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+// Register the UserStore and RoleStore with the IUserStore and IRoleStore interfaces for dependency injection
+builder.Services.AddScoped<IUserStore<User>>(provider =>
+    new UserStore<User, UserRole, AppDbContext>(
+        provider.GetRequiredService<AppDbContext>()));
+builder.Services.AddScoped<IRoleStore<UserRole>>(provider =>
+    new RoleStore<UserRole, AppDbContext, string>(
+        provider.GetRequiredService<AppDbContext>()));
+
+// Now, when CustomUserManager is resolved, it should receive a properly instantiated UserStore
+builder.Services.AddScoped<UserManager<User>, CustomUserManager>();
+
+// Database seeder
+builder.Services.Configure<DbSeederSettings>(builder.Configuration.GetSection("DbSeederSettings"));
+builder.Services.AddScoped<IDbSeeder, DbSeeder>();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
@@ -61,18 +83,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Apply database migrations
-using var scope = app.Services.CreateScope();
-var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-dbContext.Database.Migrate();
-
-// Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -80,5 +90,15 @@ app.UseCors("AllowSpecificOrigin");
 app.MapControllers();
 app.UseHttpsRedirection();
 app.MapIdentityApi<User>();
+
+// Seed database
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+    await seeder.MigrateDatabase();
+    await seeder.SeedRoles();
+    await seeder.AddRoleToAdminUser();
+}
+
 
 app.Run();
