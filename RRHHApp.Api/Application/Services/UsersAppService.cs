@@ -1,4 +1,5 @@
-﻿using RRHHApp.Api.Application.DTOs;
+﻿using System.Security.Claims;
+using RRHHApp.Api.Application.DTOs;
 using RRHHApp.Api.Application.Interfaces;
 using RRHHApp.Api.Domain.Entities;
 using RRHHApp.Api.Domain.Services;
@@ -40,7 +41,13 @@ public class UsersAppService(UsersService usersService): IUsersAppService
         await _usersService.RemoveUserFromRole(user, role);
         return MapUserToUserDto(user);
     }
-    
+
+    public async Task<UserDto> GetLoggedUser(ClaimsPrincipal user)
+    {
+        var userEntity = await _usersService.GetLoggedUser(user);
+        return MapUserToUserDto(userEntity);
+    }
+
     private UserDto MapUserToUserDto(User user)
     {
         var roles = _usersService.GetUserRoles(user).Result;
