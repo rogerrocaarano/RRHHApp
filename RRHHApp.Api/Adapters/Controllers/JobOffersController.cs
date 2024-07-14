@@ -33,14 +33,13 @@ public class JobOffersController(IJobOfferAppService jobOfferAppService) : Contr
     public async Task<ActionResult> GetJobOffer(Guid id)
     {
         JobOfferDto jobOffer;
-        if (User.IsInRole("Candidate"))
+        if (User.IsInRole("Admin") || User.IsInRole("Director") || User.IsInRole("Recruiter"))
         {
-            // mostrar solamente si la oferta está publicada y no vencida
-            jobOffer = await _jobOfferAppService.GetPublishedJobOffer(id);
+            jobOffer = await _jobOfferAppService.GetJobOffer(id);
         }
         else
         {
-            jobOffer = await _jobOfferAppService.GetJobOffer(id);
+            jobOffer = await _jobOfferAppService.GetPublishedJobOffer(id);
         }
 
         return Ok(jobOffer);
@@ -49,35 +48,26 @@ public class JobOffersController(IJobOfferAppService jobOfferAppService) : Contr
     [HttpGet("{id}/Requirements")]
     public async Task<ActionResult> GetJobOfferRequirements(Guid id)
     {
-        List<JobOfferRequirementDto> requirements;
-        if (User.IsInRole("Candidate"))
+        var jobOfferResponse = await GetJobOffer(id);
+        if (jobOfferResponse is NotFoundResult)
         {
-            // mostrar solamente si la oferta está publicada y no vencida
-            requirements = await _jobOfferAppService.GetJobOfferRequirements(id);
+            return NotFound();
         }
-        else
-        {
-            requirements = await _jobOfferAppService.GetJobOfferRequirements(id);
-        }
-
+        var requirements = await _jobOfferAppService.GetJobOfferRequirements(id);
         return Ok(requirements);
     }
 
     [HttpGet("{id}/Requirements/{requirementId}")]
     public async Task<ActionResult> GetJobOfferRequirement(Guid id, Guid requirementId)
     {
-        JobOfferRequirementDto requirement;
-        if (User.IsInRole("Candidate"))
+        var jobOfferResponse = await GetJobOffer(id);
+        if (jobOfferResponse is NotFoundResult)
         {
-            // mostrar solamente si la oferta está publicada y no vencida
-            requirement = await _jobOfferAppService.GetJobOfferRequirement(id, requirementId);
-        }
-        else
-        {
-            requirement = await _jobOfferAppService.GetJobOfferRequirement(id, requirementId);
+            return NotFound();
         }
 
-        return Ok(requirement);
+        var requirements = await _jobOfferAppService.GetJobOfferRequirements(id);
+        return Ok(requirements);
     }
 
     [HttpPost("Create")]
