@@ -67,6 +67,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 	const apply = async () => {
 		//await applyToOffer(userLogged.id, selectOffer.id)
 		console.log("estas aplicando");
+		//Sumar la funcion que llama todas las ofertas de nuevo.
 	};
 
 	return (

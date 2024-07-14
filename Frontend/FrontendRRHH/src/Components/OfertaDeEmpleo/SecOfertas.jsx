@@ -15,7 +15,7 @@ export function SecOfertas({ statusOfer }) {
 	const offers = //segun el status, en offer habra ofertas pendientes, o ofertas aprobadas
 		statusOfer === "Pending"
 			? pendingOffers
-			: allOffers.filter((off) => off.status === "Approval");
+			: allOffers?.filter((off) => off.status === "Approval");
 
 	return (
 		<section className='w-10/12 m-auto my-2 border-4 rounded-xl flex flex-col gap-2 max-h-56 overflow-y-scroll p-2 px-8 bg-slate-200'>

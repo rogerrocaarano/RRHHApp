@@ -20,7 +20,8 @@ export function OfferView() {
 	const { getAllOffers, loading, error, selectOffer } = useJobOfferStore();
 
 	useEffect(() => {
-		if (!userLogged.role) navigate("/login"); // Proteje la ruta, si no esta logeado reenvia
+		if (!userLogged.email) navigate("/login");
+		console.log("a ver que pasa", userLogged); // Proteje la ruta, si no esta logeado reenvia
 		getAllOffers(); //ejecuta la funcion que llama a todas las ofertas y las guarda en el store
 	}, [getAllOffers, navigate, userLogged.role]);
 
