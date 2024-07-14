@@ -41,32 +41,27 @@ public class CustomUserManager : UserManager<User>, IUsersRepository
 
     public async Task AddUserToRole(User user, string role)
     {
-        if (!RoleNameIsValid(role))
-        {
-            throw new ArgumentException("Invalid role name");
-        }
-
         await AddToRoleAsync(user, role);
     }
 
     public async Task RemoveUserFromRole(User user, string role)
     {
-        if (!RoleNameIsValid(role))
-        {
-            throw new ArgumentException("Invalid role name");
-        }
-
         await RemoveFromRoleAsync(user, role);
     }
 
     public async Task<List<string>> GetUserRoles(User user)
     {
         var userRoles = await GetRolesAsync(user);
-        return new List<string>(userRoles);
+        return userRoles.ToList();
     }
 
-    private bool RoleNameIsValid(string role)
+    public async Task<User?> GetUserByEmail(string email)
     {
-        return Enum.IsDefined(typeof(RoleNames), role);
+        return await FindByEmailAsync(email);
+    }
+
+    public async Task<User?> GetUserById(string id)
+    {
+        return await FindByIdAsync(id);
     }
 }

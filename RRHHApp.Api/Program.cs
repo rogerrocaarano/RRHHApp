@@ -8,7 +8,6 @@ using RRHHApp.Api.Domain.Entities;
 using RRHHApp.Api.Domain.Repositories;
 using RRHHApp.Api.Domain.Services;
 using RRHHApp.Api.Infraestructure.ExternalServices.MailKit;
-using RRHHApp.Api.Infraestructure.Persistence;
 using RRHHApp.Api.Infraestructure.Persistence.DbSeeder;
 using RRHHApp.Api.Infraestructure.Persistence.EF;
 using RRHHApp.Api.Infraestructure.Persistence.Identity;
@@ -52,6 +51,7 @@ builder.Services.AddScoped<IRoleStore<UserRole>>(provider =>
 
 // Now, when CustomUserManager is resolved, it should receive a properly instantiated UserStore
 builder.Services.AddScoped<UserManager<User>, CustomUserManager>();
+builder.Services.AddScoped<RoleManager<UserRole>, CustomRoleManager>();
 
 // Database seeder
 builder.Services.Configure<DbSeederSettings>(builder.Configuration.GetSection("DbSeederSettings"));
