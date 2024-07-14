@@ -6,12 +6,13 @@ namespace RRHHApp.Api.Adapters.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class UsersController(IUsersAppService usersAppService) : ControllerBase
 {
     private readonly IUsersAppService _usersAppService = usersAppService;
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> GetUsers()
     {
         var users = await _usersAppService.GetUsers();
@@ -19,6 +20,7 @@ public class UsersController(IUsersAppService usersAppService) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> GetUser(Guid id)
     {
         var user = await _usersAppService.GetUserById(id);
@@ -26,6 +28,7 @@ public class UsersController(IUsersAppService usersAppService) : ControllerBase
     }
 
     [HttpGet("GetByEmail/{email}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> GetUserByEmail(string email)
     {
         var user = await _usersAppService.GetUserByEmail(email);
@@ -33,6 +36,7 @@ public class UsersController(IUsersAppService usersAppService) : ControllerBase
     }
 
     [HttpPost("{userId}/AddRole/{role}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> AddUserToRole(Guid userId, string role)
     {
         var user = await _usersAppService.AddUserToRole(userId, role);
@@ -40,9 +44,17 @@ public class UsersController(IUsersAppService usersAppService) : ControllerBase
     }
 
     [HttpPost("{userId}/RemoveRole/{role}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> RemoveUserFromRole(Guid userId, string role)
     {
         var user = await _usersAppService.RemoveUserFromRole(userId, role);
+        return Ok(user);
+    }
+
+    [HttpGet("MyUser")]
+    public async Task<ActionResult> MyUser()
+    {
+        var user = await _usersAppService.GetLoggedUser(User);
         return Ok(user);
     }
 }

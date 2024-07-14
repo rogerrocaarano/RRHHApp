@@ -1,4 +1,5 @@
-﻿using RRHHApp.Api.Domain.Entities;
+﻿using System.Security.Claims;
+using RRHHApp.Api.Domain.Entities;
 using RRHHApp.Api.Domain.Entities.Enums;
 using RRHHApp.Api.Domain.Repositories;
 
@@ -68,5 +69,20 @@ public class UsersService(IUsersRepository usersRepository, IUserRolesRepository
     public async Task<UserRole> GetUserRoleByName(string roleName)
     {
         return await _userRolesRepository.GetUserRoleByName(roleName);
+    }
+    
+    public async Task<User> GetLoggedUser(ClaimsPrincipal user)
+    {
+        var email = user.FindFirst(ClaimTypes.Email)?.Value;
+        if (email == null)
+        {
+            throw new ArgumentException("User email not found");
+        }
+        var userEntity = await GetUserByEmail(email);
+        if (userEntity == null)
+        {
+            throw new ArgumentException("User not found");
+        }
+        return userEntity;
     }
 }
