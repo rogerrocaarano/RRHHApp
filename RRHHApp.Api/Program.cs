@@ -65,12 +65,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Add repositories
 builder.Services.AddScoped<IJobOfferRepository, EfJobOfferRepository>();
 builder.Services.AddScoped<IJobOfferReviewRepository, MemJobOfferReviewRepository>();
+builder.Services.AddScoped<IUsersRepository, CustomUserManager>();
+builder.Services.AddScoped<IUserRolesRepository, CustomRoleManager>();
 
 // Ensure domain services are added only once
 builder.Services.AddScoped<JobOfferService>();
+builder.Services.AddScoped<UsersService>();
 
 // Add Application services
 builder.Services.AddScoped<IJobOfferAppService, JobOfferAppService>();
+builder.Services.AddScoped<IUsersAppService, UsersAppService>();
 
 // Configuring CORS
 builder.Services.AddCors(options =>
@@ -97,6 +101,7 @@ using (var scope = app.Services.CreateScope())
     var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
     await seeder.MigrateDatabase();
     await seeder.SeedRoles();
+    await seeder.SeedTestUsers();
     await seeder.AddRoleToAdminUser();
 }
 
