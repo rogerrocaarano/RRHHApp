@@ -8,6 +8,21 @@ public class UsersService(IUsersRepository usersRepository, IUserRolesRepository
 {
     private readonly IUsersRepository _usersRepository = usersRepository;
     private readonly IUserRolesRepository _userRolesRepository = userRolesRepository;
+    
+    public async Task<List<User>> GetUsers()
+    {
+        return await _usersRepository.GetUsers();
+    }
+    
+    public async Task<User?> GetUserById(Guid id)
+    {
+        return await _usersRepository.GetUserById(id);
+    }
+    
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        return await _usersRepository.GetUserByEmail(email);
+    }
 
     public async Task AddUserToRole(User user, string role)
     {

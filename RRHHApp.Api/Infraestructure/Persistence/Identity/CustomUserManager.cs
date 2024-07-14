@@ -60,8 +60,13 @@ public class CustomUserManager : UserManager<User>, IUsersRepository
         return await FindByEmailAsync(email);
     }
 
-    public async Task<User?> GetUserById(string id)
+    public async Task<User?> GetUserById(Guid id)
     {
-        return await FindByIdAsync(id);
+        return await FindByIdAsync(id.ToString());
+    }
+
+    public async Task<List<User>> GetUsers()
+    {
+        return Users.ToList();
     }
 }
