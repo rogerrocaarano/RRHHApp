@@ -124,6 +124,7 @@ public class JobOfferService(IJobOfferRepository jobOfferRepository)
     {
         var jobOffer = await GetJobOffer(id);
         jobOffer.PublishedDate = DateTime.Now;
+        jobOffer.Status = "Published";
         var updatedJobOffer = await _jobOfferRepository.Update(jobOffer);
         return updatedJobOffer;
     }
