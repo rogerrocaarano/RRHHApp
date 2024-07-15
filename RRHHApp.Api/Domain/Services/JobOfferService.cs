@@ -119,4 +119,12 @@ public class JobOfferService(IJobOfferRepository jobOfferRepository)
         var requirement = await _jobOfferRepository.AddRequirement(jobRequirement);
         return await GetJobOffer(requirement.JobOfferId);
     }
+    
+    public async Task<JobOffer> PublishJobOffer(Guid id)
+    {
+        var jobOffer = await GetJobOffer(id);
+        jobOffer.PublishedDate = DateTime.Now;
+        var updatedJobOffer = await _jobOfferRepository.Update(jobOffer);
+        return updatedJobOffer;
+    }
 }

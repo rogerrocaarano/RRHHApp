@@ -122,4 +122,10 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
         var jobOffers = await _jobOfferService.GetPublishedJobOffers();
         return jobOffers.Select(MapJobOfferToDto).ToList();
     }
+
+    public async Task<JobOfferDto> PublishJobOffer(Guid id)
+    {
+        var jobOffer = await _jobOfferService.PublishJobOffer(id);
+        return MapJobOfferToDto(jobOffer);
+    }
 }

@@ -83,4 +83,12 @@ public class JobOffersController(IJobOfferAppService jobOfferAppService) : Contr
         await _jobOfferAppService.AddRequirement(jobOfferRequirementDto);
         return Ok();
     }
+    
+    [HttpPost("{id}/Publish")]
+    [Authorize(Roles = "Director")]
+    public async Task<ActionResult> PublishJobOffer(Guid id)
+    {
+        var jobOffer = await _jobOfferAppService.PublishJobOffer(id);
+        return Ok(jobOffer);
+    }
 }
