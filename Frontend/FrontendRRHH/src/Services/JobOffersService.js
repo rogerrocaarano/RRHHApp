@@ -1,15 +1,24 @@
-import axios from "axios";
+import { apiJobs } from "./BaseApi";
+
+//Servicio de manejo de APi sobre Ofertas
+
+//Traer todas las Offertas
+export const getOffers = async () => {
+	try {
+		const { data } = await apiJobs.get("/");
+		console.log("Response de oferta", data);
+		return data;
+	} catch (err) {
+		console.log("Error al trater las Ofertas:", err);
+	}
+};
 
 //Crear Oferta
-
-export function createOffer(data) {
-	console.log("esto llega al service", data);
-	axios
-		.post("http://localhost:5112/api/v1/JobOffers/Create", data)
-		.then((response) => {
-			console.log("Respeusta satisfactoria creacion de oferta", response.data);
-		})
-		.catch((error) => {
-			console.error("Error en la creacion de oferta:", error);
-		});
-}
+export const createOffer = async (newOffer) => {
+	try {
+		const { data } = await apiJobs.post("/Create", newOffer);
+		console.log("Response de oferta", data);
+	} catch (err) {
+		console.log("Error al crear Oferta:", err);
+	}
+};

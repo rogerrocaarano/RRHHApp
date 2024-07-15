@@ -7,6 +7,7 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF;
 
 public class AppDbContext : IdentityDbContext<User, UserRole, string>
 {
+    public DbSet<AppState> AppState { get; set; }
     public DbSet<JobOffer> JobOffers { get; set; }
     public DbSet<JobRequirement> JobRequirements { get; set; }
     

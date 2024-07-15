@@ -1,23 +1,54 @@
+import { NavLink } from "react-router-dom";
+import { UserStore } from "../../Stores/userStore";
+
 export function Aside() {
+	const { userLogged, logoutStore } = UserStore();
 	return (
-		<aside className='w-[20%] h-full flex flex-col justify-center items-center  bg-blue-600 rounded-xl border-4 border-zinc-400 '>
-			<ul className='h-10/12 flex flex-col justify-center items-start gap-10 text-lg font-bold text-zinc-300'>
+		<aside className='w-[20%] h-full flex flex-col justify-around items-center  bg-blue-600 rounded-xl border-4 border-zinc-400 '>
+			<span className='w-full flex justify-center text-zinc-300 text-lg hover:text-xl  hover:text-zinc-200 transition-all duration-300 hover:cursor-pointer'>
+				Perfil
+			</span>
+			<ul className='h-10/12 w-10/12 flex flex-col justify-center items-start gap-10 text-lg font-bold text-zinc-300'>
 				<li className='hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer'>
-					Perfil
+					<NavLink
+						to={"/"}
+						className={({ isActive }) =>
+							isActive
+								? "text-white "
+								: "hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer"
+						}
+					>
+						{userLogged.rol === "Candidate"
+							? "Ofertas de empleo"
+							: "Oferta de empleo"}
+					</NavLink>
 				</li>
 				<li className='hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer'>
-					Oferta de Trabajo
-				</li>
-				<li className='hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer'>
+					{userLogged.rol === "Candidate" && "Mis "}
 					Postulaciones
 				</li>
 				<li className='hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer'>
+					{userLogged.rol === "Candidate" && "Mis "}
 					Procesos
 				</li>
 				<li className='hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer'>
 					Others
 				</li>
 			</ul>
+			<div className='w-full flex justify-center text-zinc-300 text-lg'>
+				{userLogged.email ? (
+					<span
+						className='hover:text-xl hover:text-zinc-700 transition-all duration-300 hover:cursor-pointer'
+						onClick={logoutStore}
+					>
+						Logout{" "}
+					</span>
+				) : (
+					<span className='hover:text-xl hover:text-zinc-200 transition-all duration-300 hover:cursor-pointer'>
+						<NavLink to={"/login"}>Login</NavLink>
+					</span>
+				)}
+			</div>
 		</aside>
 	);
 }
