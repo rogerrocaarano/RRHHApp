@@ -13,6 +13,38 @@ export const UserStore = create(
 			allUsers: [],
 			loading: false,
 			error: null,
+			// loginUserRequest: async (userToLog) => {
+			// 	get().logoutStore();
+			// 	console.log("llega al store", userToLog);
+			// 	set({ loading: true });
+			// 	try {
+			// 		const response = await loginUser(userToLog);
+			// 		console.log("lo que viene del service al store", response);
+
+			// 		const finallyResponse = get().getUserLoggedData();
+			// 		return finallyResponse;
+			// 	} catch (error) {
+			// 		set({ error: error });
+			// 		console.log("error en el store", error);
+			// 	} finally {
+			// 		set({ loading: false });
+			// 	}
+			// },
+			// getUserLoggedData: async () => {
+			// 	set({ loading: true });
+			// 	try {
+			// 		const newResponse = await getUserLoggedData();
+			// 		console.log("esto responde el login", newResponse);
+			// 		set({ userLogged: newResponse });
+			// 		return "succes";
+			// 	} catch (error) {
+			// 		set({ error: error });
+			// 		console.log("error en el store", error);
+			// 		return "error";
+			// 	} finally {
+			// 		set({ loading: false });
+			// 	}
+			// },
 			loginUserRequest: async (userToLog) => {
 				get().logoutStore();
 				console.log("llega al store", userToLog);
@@ -20,11 +52,17 @@ export const UserStore = create(
 				try {
 					const response = await loginUser(userToLog);
 					console.log("lo que viene del service al store", response);
-					const finallyResponse = get().getUserLoggedData();
+
+					if (response === "fail in loggin") {
+						throw new Error("Failed to login");
+					}
+
+					const finallyResponse = await get().getUserLoggedData();
 					return finallyResponse;
 				} catch (error) {
-					set({ error: error });
+					set({ error: error.message });
 					console.log("error en el store", error);
+					return "error"; // Asegúrate de devolver un valor en caso de error
 				} finally {
 					set({ loading: false });
 				}
@@ -37,13 +75,15 @@ export const UserStore = create(
 					set({ userLogged: newResponse });
 					return "succes";
 				} catch (error) {
-					set({ error: error });
+					set({ error: error.message });
 					console.log("error en el store", error);
+					return "error"; // Asegúrate de devolver un valor en caso de error
 				} finally {
 					set({ loading: false });
 				}
 			},
 			logoutStore: () => {
+				//esto configura a la cookie con un vencimiento pasado, para que se destruya al momento de hacer logout
 				document.cookie =
 					".AspNetCore.Identity.Application=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 				set({ userLogged: {} });

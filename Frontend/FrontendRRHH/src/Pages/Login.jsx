@@ -21,16 +21,18 @@ export function Login() {
 
 	console.log("en el login, el userLoged es", userLogged);
 	const onSubmit = async (data) => {
-		// console.log("data al enviar formulario", data);
 		try {
 			const wasSucces = await loginUserRequest(data);
-			wasSucces == "succes" && toast.success("Usuario Logeado con exito");
-		} catch (error) {
+			if (wasSucces === "succes") {
+				toast.success("Usuario Logeado con exito");
+				navigate("/offerView");
+			} else {
+				throw new Error("Error en el login");
+			}
+		} catch (err) {
 			toast.error(
-				"Tuvimos problemas al intentar Loegarte, por favor vuelve a intentar mas tarde"
+				"Tuvimos problemas al intentar Loegarte, por favor asegura que tus datos sean correctos"
 			);
-		} finally {
-			navigate("/offerView");
 		}
 	};
 

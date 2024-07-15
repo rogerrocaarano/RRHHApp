@@ -26,9 +26,25 @@ export const loginUser = async (userToLog) => {
 		return data;
 	} catch (err) {
 		console.log("Error al del login:", err);
-		return err;
+		return "fail in loggin"; // Asegura devolver un valor en caso de error
 	}
 };
+// export const loginUser = async (userToLog) => {
+// 	console.log("el usuario para logear en services", userToLog);
+// 	try {
+// 		const { data } = await apiUSers.post(
+// 			"/login?useCookies=true&useSessionCookies=true",
+// 			userToLog
+// 		);
+// 		console.log("Response de login", data);
+// 		data &&
+// 		return data;
+// 	} catch (err) {
+// 		console.log("Error al del login:", err);
+// 		return "fail in loggin";
+// 	}
+
+// };
 //Informacion del usuario logeado
 export const getUserLoggedData = async () => {
 	try {
