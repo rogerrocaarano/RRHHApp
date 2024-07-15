@@ -35,11 +35,11 @@ export function Aside() {
 					</NavLink>
 				</li>
 				<li className='hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer'>
-					{userLogged.roles.length > 1 && "Mis "}
+					{userLogged.roles.length < 1 && "Mis "}
 					Postulaciones
 				</li>
 				<li className='hover:text-xl border-b-2 border-transparent hover:text-zinc-200 hover:border-zinc-200 transition-all duration-300 hover:cursor-pointer'>
-					{userLogged.roles.length > 1 && "Mis "}
+					{userLogged.roles.length < 1 && "Mis "}
 					Procesos
 				</li>
 
