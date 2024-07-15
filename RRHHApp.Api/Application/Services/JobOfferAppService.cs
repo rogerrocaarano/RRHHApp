@@ -16,6 +16,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
             Id = jobOffer.Id,
             Title = jobOffer.Title,
             Description = jobOffer.Description,
+            PublishedDate = jobOffer.PublishedDate,
             ExpirationDate = jobOffer.ExpirationDate,
             DisplayBudget = jobOffer.DisplayBudget,
             Budget = jobOffer.Budget,
