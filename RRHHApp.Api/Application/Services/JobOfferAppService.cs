@@ -82,9 +82,27 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
         return MapJobOfferToDto(addedJobOffer);
     }
 
-    public async Task<JobOfferDto> UpdateJobOffer(UpdateJobOfferDto updateJobOfferDto)
+    public async Task<JobOfferDto> UpdateJobOffer(Guid id, UpdateJobOfferDto updateJobOfferDto)
     {
-        throw new NotImplementedException();
+        var jobOffer = await _jobOfferService.GetJobOffer(id);
+        var updatedJobOffer = MapUpdateDtoToJobOffer(id, updateJobOfferDto);
+        updatedJobOffer.Requirements = jobOffer.Requirements;
+        var result = await _jobOfferService.UpdateJobOffer(updatedJobOffer);
+        return MapJobOfferToDto(result);
+    }
+    
+    private JobOffer MapUpdateDtoToJobOffer(Guid jobOfferId, UpdateJobOfferDto updateJobOfferDto)
+    {
+        return new JobOffer
+        {
+            Id = jobOfferId,
+            Title = updateJobOfferDto.Title,
+            Description = updateJobOfferDto.Description,
+            ExpirationDate = updateJobOfferDto.ExpirationDate,
+            LastUpdatedDate = DateTime.Now.ToUniversalTime(),
+            DisplayBudget = updateJobOfferDto.DisplayBudget,
+            Budget = updateJobOfferDto.Budget
+        };
     }
 
     public async Task DeleteJobOffer(Guid id)

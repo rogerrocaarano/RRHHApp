@@ -8,7 +8,7 @@ public interface IJobOfferAppService
     Task<JobOfferDto> GetJobOffer(Guid id);
     Task<List<JobOfferDto>> GetJobOffers();
     Task<JobOfferDto> CreateJobOffer(CreateJobOfferDto createJobOfferDto);
-    Task<JobOfferDto> UpdateJobOffer(UpdateJobOfferDto updateJobOfferDto);
+    Task<JobOfferDto> UpdateJobOffer(Guid id, UpdateJobOfferDto updateJobOfferDto);
     Task DeleteJobOffer(Guid id);
     Task<JobOfferRequirementDto> AddRequirement(CreateJobOfferRequirementDto jobOfferRequirementDto);
     Task<List<JobOfferRequirementDto>> GetJobOfferRequirements(Guid jobOfferId);

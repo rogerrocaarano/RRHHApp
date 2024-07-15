@@ -91,4 +91,12 @@ public class JobOffersController(IJobOfferAppService jobOfferAppService) : Contr
         var jobOffer = await _jobOfferAppService.PublishJobOffer(id);
         return Ok(jobOffer);
     }
+    
+    [HttpPatch("{id}/Update")]
+    [Authorize(Roles = "Admin,Director,Recruiter")]
+    public async Task<ActionResult> UpdateJobOffer(Guid id, [FromBody] UpdateJobOfferDto updateJobOfferDto)
+    {
+        var jobOffer = await _jobOfferAppService.UpdateJobOffer(id, updateJobOfferDto);
+        return Ok(jobOffer);
+    }
 }

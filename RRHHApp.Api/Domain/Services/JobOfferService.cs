@@ -19,9 +19,10 @@ public class JobOfferService(IJobOfferRepository jobOfferRepository)
         return addedJobRequirement;
     }
 
-    public async Task<JobOffer> UpdateJobOffer()
+    public async Task<JobOffer> UpdateJobOffer(JobOffer jobOffer)
     {
-        throw new NotImplementedException();
+        var updatedJobOffer = await _jobOfferRepository.Update(jobOffer);
+        return updatedJobOffer;
     }
 
     public async Task DeleteJobOffer()
