@@ -13,6 +13,7 @@ export const useJobOfferStore = create((set, get) => ({
 	loading: false,
 	error: null,
 	pendingOffers: [],
+	publishedOffers: [],
 	getAllOffers: async () => {
 		set({ loading: true });
 		try {
@@ -43,6 +44,12 @@ export const useJobOfferStore = create((set, get) => ({
 		);
 		pendings.reverse();
 		set({ pendingOffers: pendings });
+	},
+	getPublishedOffers: () => {
+		const offersInDb = get().allOffers;
+		let publisheds = offersInDb.filter((offer) => offer.status === "Published");
+		publisheds.reverse();
+		set({ publishedOffers: publisheds });
 	},
 	getSelectOffer: async (offerId) => {
 		set({ loading: true });

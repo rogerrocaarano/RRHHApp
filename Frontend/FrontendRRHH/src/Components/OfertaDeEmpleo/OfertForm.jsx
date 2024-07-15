@@ -11,15 +11,21 @@ import { CloseIcon } from "../../assets/icons/CloseIcon";
 // PopUp de exito o error
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 /* eslint-disable react/prop-types */
-export function OfertForm({ toggleJobFormModal, selectOffer }) {
+export function OfertForm({ toggleJobFormModal }) {
 	const { userLogged } = UserStore();
 	//Guarda el valor del dia de creacion para setearlo en el formulario como valor default
 	const currentDate = new Date().toISOString().split("T")[0];
 	//accede a las funciones del Hook de manejo de Ofertas
-	const { createNewOffer, removeSelectOffer, editOffer, publishJobOffer } =
-		useJobOfferStore();
+	const {
+		createNewOffer,
+		removeSelectOffer,
+		editOffer,
+		publishJobOffer,
+		selectOffer,
+	} = useJobOfferStore();
 	//Seteo del Hook-Form -> manejador del formulario
 
 	const {
@@ -61,7 +67,6 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 	};
 
 	const aproveOfertFunction = async () => {
-		console.log("en aprobar", selectOffer.id);
 		const response = await publishJobOffer(selectOffer.id);
 		response == "succes"
 			? toast.success("La oferta fue publicada con éxito")
@@ -274,6 +279,11 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 								userLogged.roles.some((rol) => rol.name === "Recruiter")
 									? true
 									: false
+							}
+							placeholder={
+								userLogged.roles.length > 1 &&
+								userLogged.roles.some((rol) => rol.name === "Recruiter") &&
+								"Campo solo disponible para el usuario Director"
 							}
 						/>
 					</>

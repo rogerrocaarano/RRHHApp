@@ -6,7 +6,7 @@ import { OfferView } from "./Pages/OfferView";
 import { UsersView } from "./Pages/UsersView";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
-
+import { Profile } from "./Pages/Profile";
 export default function App() {
 	return (
 		<Router>
@@ -33,6 +33,14 @@ export default function App() {
 					}
 				/>
 
+				<Route
+					path='/profile'
+					element={
+						<LayoutPrincipal>
+							<Profile />
+						</LayoutPrincipal>
+					}
+				/>
 				{/* Agrega más rutas con layout aquí */}
 			</Routes>
 			<ToastContainer />

@@ -26,10 +26,11 @@ export const createOffer = async (newOffer) => {
 
 //Traer Una oferta
 export const getOneOffer = async (offerId) => {
+	console.log("el id que llega al service", offerId);
 	try {
-		const { data } = await apiJobs.get("/", offerId);
-		console.log("Response de oferta", { ...data[0] });
-		return { ...data[0] };
+		const { data } = await apiJobs.get(`/${offerId}`);
+		console.log("Response de oferta", data);
+		return { ...data };
 	} catch (err) {
 		console.log("Error al trater las Ofertas:", err);
 	}
