@@ -12,12 +12,12 @@ export default function App() {
 		<Router>
 			<Routes>
 				{/* Rutas sin layout */}
-				<Route path='/login' element={<Login />} />
+				<Route path='/' element={<Login />} />
 				<Route path='/register' element={<Register />} />
 
 				{/* Rutas con layout */}
 				<Route
-					path='/'
+					path='/offerView'
 					element={
 						<LayoutPrincipal>
 							<OfferView />

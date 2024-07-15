@@ -7,10 +7,10 @@ export function UsersView() {
 	const { loading, getAllUsers, allUsers, userLogged } = UserStore();
 	const navigate = useNavigate();
 	useEffect(() => {
-		if (userLogged.userName !== "admin") {
-			navigate("/login");
-		} else {
+		if (userLogged.roles.some((role) => role.name === "Admin")) {
 			getAllUsers();
+		} else {
+			navigate("/");
 		}
 	}, [userLogged.userName, navigate, getAllUsers]);
 	allUsers.length > 0 && console.log("buscando", allUsers[0].user.userName);
@@ -28,7 +28,9 @@ export function UsersView() {
 							>
 								<span className='text-zinc-800'>{item.user.email}</span>
 								<span className='text-zinc-800'>
-									{item.user.normalizedUserName}
+									{item.user.normalizedUserName.includes("@")
+										? "CANDIDATE"
+										: item.user.normalizedUserName}
 								</span>
 								<button className='rounded-xl p-2 bg-blue-500'>
 									Change Rol

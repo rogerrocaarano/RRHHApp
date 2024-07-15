@@ -12,23 +12,25 @@ import { EyeOpen } from "../assets/icons/EyeOpen";
 export function Login() {
 	const [showPassword, setShowPassword] = useState(false);
 	const navigate = useNavigate();
-	const { loginUserRequest } = UserStore();
+	const { loginUserRequest, userLogged } = UserStore();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
 
+	console.log("en el login, el userLoged es", userLogged);
 	const onSubmit = async (data) => {
 		// console.log("data al enviar formulario", data);
 		try {
 			const wasSucces = await loginUserRequest(data);
 			wasSucces == "succes" && toast.success("Usuario Logeado con exito");
-			navigate("/");
 		} catch (error) {
 			toast.error(
 				"Tuvimos problemas al intentar Loegarte, por favor vuelve a intentar mas tarde"
 			);
+		} finally {
+			navigate("/offerView");
 		}
 	};
 

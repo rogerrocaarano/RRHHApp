@@ -32,7 +32,7 @@ export function Register() {
 				toast.success(
 					"Para terminar tu registro debes dar conformidad desde el email que enviamos a tu correo"
 				);
-			navigate("/login");
+			navigate("/");
 		} catch (error) {
 			toast.error(
 				"Tuvimos problemas al intentar registrate, por favor vuelve a intentar mas tarde"

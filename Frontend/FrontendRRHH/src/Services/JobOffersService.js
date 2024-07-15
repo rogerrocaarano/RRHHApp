@@ -50,7 +50,7 @@ export const publishOffer = async (id) => {
 	try {
 		const { data } = await apiJobs.post(`${id}/Publish`);
 		console.log("Respuesta de la publicacion", data);
-		return "succes";
+		return data;
 	} catch (error) {
 		console.log(error);
 	}

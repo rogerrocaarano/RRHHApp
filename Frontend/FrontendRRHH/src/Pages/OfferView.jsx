@@ -20,10 +20,10 @@ export function OfferView() {
 	const { getAllOffers, loading, error, selectOffer } = useJobOfferStore();
 
 	useEffect(() => {
-		if (!userLogged.userName) navigate("/login");
+		if (!userLogged.user.userName) navigate("/");
 		// Proteje la ruta, si no esta logeado reenvia
 		getAllOffers(); //ejecuta la funcion que llama a todas las ofertas y las guarda en el store
-	}, [getAllOffers, navigate, userLogged.userName]);
+	}, [getAllOffers, navigate, userLogged]);
 
 	useEffect(() => {
 		toggleJobFormModal();
@@ -33,9 +33,11 @@ export function OfferView() {
 		<section className='w-[80%]  flex flex-col justify-around overflow-hidden pl-10 pt-2'>
 			<section className=' h-24 w-10/12 -ml-4 flex justify-start gap-16 items-center '>
 				<Buscador />
-				{userLogged.userName !== "candidate" && (
-					<BotonCrearOferta toggleJobFormModal={toggleJobFormModal} />
-				)}
+				{userLogged.roles &&
+					userLogged.roles.length > 0 &&
+					userLogged.roles.some((role) => role.name !== "Candidate") && (
+						<BotonCrearOferta toggleJobFormModal={toggleJobFormModal} />
+					)}
 			</section>
 
 			{/* div de abajo contiene el popUp del Formulario */}
@@ -58,15 +60,17 @@ export function OfferView() {
 					{error && error}
 				</h2>
 
-				{userLogged.userName != "candidate" && !loading && !error && (
-					//Solo se muestra si no esta logeado un candidato, si se termino de cargar la peticion y no hay errores
-					<>
-						<h2 className='h-fit text-xl font-bold'>
-							Ofertas Pendientes de Aprobacion
-						</h2>
-						<SecOfertas statusOfer='Pending' />
-					</>
-				)}
+				{userLogged.roles.some((role) => role.name !== "Candidate") &&
+					!loading &&
+					!error && (
+						//Solo se muestra si no esta logeado un candidato, si se termino de cargar la peticion y no hay errores
+						<>
+							<h2 className='h-fit text-xl font-bold'>
+								Ofertas Pendientes de Aprobacion
+							</h2>
+							<SecOfertas statusOfer='Pending' />
+						</>
+					)}
 
 				{!loading && !error && (
 					<>
@@ -75,15 +79,17 @@ export function OfferView() {
 					</>
 				)}
 
-				{userLogged.userName == "candidate" && !loading && !error && (
-					//Solo se muestra si esta logeado un candidato, si se termino de cargar la peticion y no hay errores
-					<>
-						<h2 className='h-fit text-xl font-bold'>
-							Ofertas con postulacion efectuada
-						</h2>
-						<SecOfertas statusOfer='Postulate' />
-					</>
-				)}
+				{userLogged.roles.every((role) => role.name === "Candidate") &&
+					!loading &&
+					!error && (
+						//Solo se muestra si esta logeado un candidato, si se termino de cargar la peticion y no hay errores
+						<>
+							<h2 className='h-fit text-xl font-bold'>
+								Ofertas con postulacion efectuada
+							</h2>
+							<SecOfertas statusOfer='Postulate' />
+						</>
+					)}
 			</section>
 		</section>
 	);

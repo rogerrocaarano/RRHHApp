@@ -88,9 +88,8 @@ export const useJobOfferStore = create((set, get) => ({
 	publishJobOffer: async (offerId) => {
 		set({ loading: true });
 		try {
-			const response = await publishOffer(offerId);
-			console.log(response);
-			get.getAllOffers();
+			await publishOffer(offerId);
+			get().getAllOffers();
 			return "succes";
 		} catch (error) {
 			console.log(error);

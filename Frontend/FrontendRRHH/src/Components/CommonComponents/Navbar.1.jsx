@@ -19,7 +19,7 @@ export function Navbar() {
 						/> */}
 						<span className='text-white ml-2 hover:cursor-pointer '>
 							{" "}
-							<Link to={"/"}> RRHHapp</Link>
+							<Link to={"/offerView"}> RRHHapp</Link>
 						</span>
 					</div>
 				</div>
@@ -32,7 +32,7 @@ export function Navbar() {
 				{/* Right Section */}
 				<div className='flex items-center space-x-4'>
 					<span className='text-white'>
-						{userLogged.userName ? userLogged.userName : "Username"}
+						{userLogged.user ? userLogged.user.userName : "Username"}
 					</span>
 					{/* <img
 						src='/path/to/your/user-image.jpg'
