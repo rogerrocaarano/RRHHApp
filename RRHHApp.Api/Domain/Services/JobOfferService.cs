@@ -43,11 +43,14 @@ public class JobOfferService(IJobOfferRepository jobOfferRepository)
     public async Task<JobOffer> GetPublishedJobOffer(Guid id)
     {
         var jobOffer = await GetJobOffer(id);
-        if (jobOffer.PublishedDate == null || jobOffer.ExpirationDate > DateTime.Now)
+        if (jobOffer.PublishedDate == null)
         {
-            throw new Exception("Job offer not published or expired");
+            throw new Exception("Job offer not published");
         }
-
+        if (jobOffer.ExpirationDate < DateTime.Now.ToUniversalTime())
+        {
+            throw new Exception("Job offer expired");
+        }
         return jobOffer;
     }
 
@@ -118,5 +121,15 @@ public class JobOfferService(IJobOfferRepository jobOfferRepository)
 
         var requirement = await _jobOfferRepository.AddRequirement(jobRequirement);
         return await GetJobOffer(requirement.JobOfferId);
+    }
+    
+    public async Task<JobOffer> PublishJobOffer(Guid id)
+    {
+        var jobOffer = await GetJobOffer(id);
+        jobOffer.PublishedDate = DateTime.Now.ToUniversalTime();
+        jobOffer.LastUpdatedDate = DateTime.Now.ToUniversalTime();
+        jobOffer.Status = "Published";
+        var updatedJobOffer = await _jobOfferRepository.Update(jobOffer);
+        return updatedJobOffer;
     }
 }

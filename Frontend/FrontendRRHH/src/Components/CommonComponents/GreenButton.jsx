@@ -10,6 +10,7 @@ export function GreenButton({ buttonContent, offerId }) {
 	const { getSelectOffer } = useJobOfferStore();
 
 	const goToEdit = async () => {
+		console.log(offerId);
 		await getSelectOffer(offerId); //peticion del id al store
 	};
 

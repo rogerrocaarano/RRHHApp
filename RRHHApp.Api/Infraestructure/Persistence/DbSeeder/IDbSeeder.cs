@@ -6,4 +6,5 @@ public interface IDbSeeder
     Task SeedRoles();
     Task MigrateDatabase();
     Task AddRoleToAdminUser();
+    Task SeedTestUsers();
 }

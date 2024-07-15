@@ -4,6 +4,7 @@ import {
 	createOffer,
 	getOneOffer,
 	updateOffer,
+	publishOffer,
 } from "../Services/JobOffersService";
 
 export const useJobOfferStore = create((set, get) => ({
@@ -12,6 +13,7 @@ export const useJobOfferStore = create((set, get) => ({
 	loading: false,
 	error: null,
 	pendingOffers: [],
+	publishedOffers: [],
 	getAllOffers: async () => {
 		set({ loading: true });
 		try {
@@ -42,6 +44,12 @@ export const useJobOfferStore = create((set, get) => ({
 		);
 		pendings.reverse();
 		set({ pendingOffers: pendings });
+	},
+	getPublishedOffers: () => {
+		const offersInDb = get().allOffers;
+		let publisheds = offersInDb.filter((offer) => offer.status === "Published");
+		publisheds.reverse();
+		set({ publishedOffers: publisheds });
 	},
 	getSelectOffer: async (offerId) => {
 		set({ loading: true });
@@ -83,5 +91,18 @@ export const useJobOfferStore = create((set, get) => ({
 		// } finally {
 		// 	set({ loading: true });
 		// }
+	},
+	publishJobOffer: async (offerId) => {
+		set({ loading: true });
+		try {
+			await publishOffer(offerId);
+			get().getAllOffers();
+			return "succes";
+		} catch (error) {
+			console.log(error);
+			set({ error: error });
+		} finally {
+			set({ loading: false });
+		}
 	},
 }));

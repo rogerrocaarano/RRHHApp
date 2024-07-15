@@ -5,8 +5,4 @@ import "./index.css";
 // Supports weights 300-700
 import "@fontsource-variable/comfortaa";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>
-);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);

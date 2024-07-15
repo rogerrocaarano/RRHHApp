@@ -12,22 +12,26 @@ import { EyeOpen } from "../assets/icons/EyeOpen";
 export function Login() {
 	const [showPassword, setShowPassword] = useState(false);
 	const navigate = useNavigate();
-	const { loginUserRequest } = UserStore();
+	const { loginUserRequest, userLogged } = UserStore();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
 
+	console.log("en el login, el userLoged es", userLogged);
 	const onSubmit = async (data) => {
-		// console.log("data al enviar formulario", data);
 		try {
 			const wasSucces = await loginUserRequest(data);
-			wasSucces == "succes" && toast.success("Usuario Logeado con exito");
-			navigate("/");
-		} catch (error) {
+			if (wasSucces === "succes") {
+				toast.success("Usuario Logeado con exito");
+				navigate("/offerView");
+			} else {
+				throw new Error("Error en el login");
+			}
+		} catch (err) {
 			toast.error(
-				"Tuvimos problemas al intentar Loegarte, por favor vuelve a intentar mas tarde"
+				"Tuvimos problemas al intentar Loegarte, por favor asegura que tus datos sean correctos"
 			);
 		}
 	};
@@ -50,16 +54,16 @@ export function Login() {
 						</label>
 						<input
 							className='w-2/3 rounded-xl pl-4'
-							type='email'
+							type='text' //--------------CAMBIAR DESPUES A EMAIL
 							{...register("email", {
 								required: {
 									value: true,
 									message: "Correo electrónico es requerido",
 								},
-								pattern: {
-									value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-									message: "Debes escribir un correo válido",
-								},
+								// pattern: {
+								// 	value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+								// 	message: "Debes escribir un correo válido",
+								// }, //-------------------------------------------HABILITAR
 							})}
 						/>
 					</div>
@@ -87,12 +91,12 @@ export function Login() {
 										value: 6,
 										message: "La contraseña debe tener al menos 6 caracteres",
 									},
-									pattern: {
-										value:
-											/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/,
-										message:
-											"La contraseña debe tener al menos una mayúscula, un número y un carácter especial",
-									},
+									// pattern: {
+									// 	value:
+									// 		/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/,
+									// 	message:
+									// 		"La contraseña debe tener al menos una mayúscula, un número y un carácter especial",
+									// },  //-------------------------------------------HABILITAR
 								})}
 							/>
 							<button
