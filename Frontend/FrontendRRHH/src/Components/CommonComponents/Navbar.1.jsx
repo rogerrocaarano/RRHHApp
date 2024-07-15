@@ -32,7 +32,7 @@ export function Navbar() {
 				{/* Right Section */}
 				<div className='flex items-center space-x-4'>
 					<span className='text-white'>
-						{userLogged.email ? userLogged.email : "Username"}
+						{userLogged.userName ? userLogged.userName : "Username"}
 					</span>
 					{/* <img
 						src='/path/to/your/user-image.jpg'

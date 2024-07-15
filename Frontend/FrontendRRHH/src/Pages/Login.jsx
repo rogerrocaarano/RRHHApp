@@ -50,16 +50,16 @@ export function Login() {
 						</label>
 						<input
 							className='w-2/3 rounded-xl pl-4'
-							type='email'
+							type='text' //--------------CAMBIAR DESPUES A EMAIL
 							{...register("email", {
 								required: {
 									value: true,
 									message: "Correo electrónico es requerido",
 								},
-								pattern: {
-									value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-									message: "Debes escribir un correo válido",
-								},
+								// pattern: {
+								// 	value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+								// 	message: "Debes escribir un correo válido",
+								// }, //-------------------------------------------HABILITAR
 							})}
 						/>
 					</div>
@@ -87,12 +87,12 @@ export function Login() {
 										value: 6,
 										message: "La contraseña debe tener al menos 6 caracteres",
 									},
-									pattern: {
-										value:
-											/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/,
-										message:
-											"La contraseña debe tener al menos una mayúscula, un número y un carácter especial",
-									},
+									// pattern: {
+									// 	value:
+									// 		/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/,
+									// 	message:
+									// 		"La contraseña debe tener al menos una mayúscula, un número y un carácter especial",
+									// },  //-------------------------------------------HABILITAR
 								})}
 							/>
 							<button

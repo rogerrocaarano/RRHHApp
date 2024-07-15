@@ -20,10 +20,10 @@ export function OfferView() {
 	const { getAllOffers, loading, error, selectOffer } = useJobOfferStore();
 
 	useEffect(() => {
-		if (!userLogged.email) navigate("/login");
-		console.log("a ver que pasa", userLogged); // Proteje la ruta, si no esta logeado reenvia
+		if (!userLogged.userName) navigate("/login");
+		// Proteje la ruta, si no esta logeado reenvia
 		getAllOffers(); //ejecuta la funcion que llama a todas las ofertas y las guarda en el store
-	}, [getAllOffers, navigate, userLogged.role]);
+	}, [getAllOffers, navigate, userLogged.userName]);
 
 	useEffect(() => {
 		toggleJobFormModal();
@@ -33,7 +33,7 @@ export function OfferView() {
 		<section className='w-[80%]  flex flex-col justify-around overflow-hidden pl-10 pt-2'>
 			<section className=' h-24 w-10/12 -ml-4 flex justify-start gap-16 items-center '>
 				<Buscador />
-				{userLogged.role !== "Candidate" && (
+				{userLogged.userName !== "candidate" && (
 					<BotonCrearOferta toggleJobFormModal={toggleJobFormModal} />
 				)}
 			</section>
@@ -58,7 +58,7 @@ export function OfferView() {
 					{error && error}
 				</h2>
 
-				{userLogged.role != "Candidate" && !loading && !error && (
+				{userLogged.userName != "candidate" && !loading && !error && (
 					//Solo se muestra si no esta logeado un candidato, si se termino de cargar la peticion y no hay errores
 					<>
 						<h2 className='h-fit text-xl font-bold'>
@@ -75,7 +75,7 @@ export function OfferView() {
 					</>
 				)}
 
-				{userLogged.role == "Candidate" && !loading && !error && (
+				{userLogged.userName == "candidate" && !loading && !error && (
 					//Solo se muestra si esta logeado un candidato, si se termino de cargar la peticion y no hay errores
 					<>
 						<h2 className='h-fit text-xl font-bold'>

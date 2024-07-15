@@ -4,6 +4,7 @@ import {
 	createOffer,
 	getOneOffer,
 	updateOffer,
+	publishOffer,
 } from "../Services/JobOffersService";
 
 export const useJobOfferStore = create((set, get) => ({
@@ -83,5 +84,19 @@ export const useJobOfferStore = create((set, get) => ({
 		// } finally {
 		// 	set({ loading: true });
 		// }
+	},
+	publishJobOffer: async (offerId) => {
+		set({ loading: true });
+		try {
+			const response = await publishOffer(offerId);
+			console.log(response);
+			get.getAllOffers();
+			return "succes";
+		} catch (error) {
+			console.log(error);
+			set({ error: error });
+		} finally {
+			set({ loading: false });
+		}
 	},
 }));

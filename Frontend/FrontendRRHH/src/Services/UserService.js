@@ -1,7 +1,7 @@
 import { apiUSers } from "./BaseApi";
 //Servicio de manejo de APi sobre Ofertas
 
-//Traer todas las Offertas
+//Registra el usuario
 export const registerUser = async (newUser) => {
 	console.log("llega al register", newUser);
 	try {
@@ -14,7 +14,7 @@ export const registerUser = async (newUser) => {
 	}
 };
 
-//Crear Oferta
+//Logea el usuario, no devuelve, solo trae cookie
 export const loginUser = async (userToLog) => {
 	console.log("el usuario para logear en services", userToLog);
 	try {
@@ -27,5 +27,26 @@ export const loginUser = async (userToLog) => {
 	} catch (err) {
 		console.log("Error al del login:", err);
 		return err;
+	}
+};
+//Informacion del usuario logeado
+export const getUserLoggedData = async () => {
+	try {
+		const { data } = await apiUSers.get("api/v1/Users/MyUser");
+		console.log("Response de oferta", data);
+		return data;
+	} catch (err) {
+		console.log("Error al trater las Ofertas:", err);
+	}
+};
+
+//Traer todos los usuarios, si soy Admin
+export const getAllUserFromdb = async () => {
+	try {
+		const { data } = await apiUSers.get("api/v1/Users");
+		console.log("Response de oferta", data);
+		return data;
+	} catch (err) {
+		console.log("Error al trater las Ofertas:", err);
 	}
 };

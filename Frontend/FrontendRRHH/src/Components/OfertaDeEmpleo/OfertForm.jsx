@@ -18,7 +18,8 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 	//Guarda el valor del dia de creacion para setearlo en el formulario como valor default
 	const currentDate = new Date().toISOString().split("T")[0];
 	//accede a las funciones del Hook de manejo de Ofertas
-	const { createNewOffer, removeSelectOffer, editOffer } = useJobOfferStore();
+	const { createNewOffer, removeSelectOffer, editOffer, publishJobOffer } =
+		useJobOfferStore();
 	//Seteo del Hook-Form -> manejador del formulario
 
 	const {
@@ -43,9 +44,8 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 	const publishedDate = watch("publishedDate");
 
 	const onSubmitNewOferr = async (newData) => {
-		console.log(newData);
 		let wasSucces;
-		selectOffer
+		!selectOffer.id
 			? (wasSucces = await createNewOffer(newData))
 			: (wasSucces = await editOffer(newData));
 		// Poner nueva función del hook
@@ -57,8 +57,20 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 			  );
 		reset();
 		toggleJobFormModal(); // Cierra el formulario
+		removeSelectOffer();
 	};
 
+	const aproveOfertFunction = async () => {
+		const response = await publishJobOffer(selectOffer.id);
+		response == "succes"
+			? toast.success("La oferta fue publicada con éxito")
+			: toast.error(
+					"Tuvimos problemas publicar la oferta, vuelve a intentar mas tarde por favor"
+			  );
+		reset();
+		toggleJobFormModal(); // Cierra el formulario
+		removeSelectOffer();
+	};
 	const closeModal = () => {
 		selectOffer.title && removeSelectOffer();
 		toggleJobFormModal();
@@ -100,7 +112,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='w-2/3 rounded-xl pl-4'
 						type='text'
-						disabled={userLogged.role === "Candidate" ? true : false}
+						disabled={userLogged.userName === "candidate" ? true : false}
 						{...register("title", {
 							required: {
 								value: true,
@@ -127,7 +139,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 				<textarea
 					type='text'
 					className='rounded-xl px-6 py-1'
-					disabled={userLogged.role === "Candidate" ? true : false}
+					disabled={userLogged.userName === "candidate" ? true : false}
 					{...register("description", {
 						required: {
 							value: true,
@@ -156,16 +168,16 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='w-2/3 rounded-xl flex pl-36'
 						type='date'
-						disabled={userLogged.role === "Candidate" ? true : false}
+						disabled={userLogged.userName === "candidate" ? true : false}
 						{...register("expirationDate", {
 							required: {
 								value: true,
 								message: "Debes completar el campo",
 							},
 
-							validate: (value) =>
-								value > publishedDate ||
-								"La fecha de expiración no puede ser anterior o igual a la fecha de publicación",
+							// validate: (value) =>
+							// 	value > publishedDate ||
+							// 	"La fecha de expiración no puede ser anterior o igual a la fecha de publicación",
 						})}
 					/>
 				</div>
@@ -188,7 +200,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='w-2/3 rounded-xl pl-4'
 						type='text'
-						disabled={userLogged.role === "Candidate" ? true : false}
+						disabled={userLogged.userName === "candidate" ? true : false}
 						{...register("budget", {
 							required: {
 								value: true,
@@ -219,7 +231,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 					<input
 						className='size-6 my-auto rounded-xl'
 						type='checkbox'
-						disabled={userLogged.role === "Candidate" ? true : false}
+						disabled={userLogged.userName === "candidate" ? true : false}
 						{...register("displayBudget")}
 					/>
 				</div>
@@ -227,7 +239,7 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 				{/* Hay que trabajar la lista de requerimientos y la lista de personas que han aplicado... aunque esta ultima no tienen tanto que ver en el formulario */}
 
 				{/* Revisiones - Solo disponible para utilizar quien tenga credenciales de aprobacion, y que sea visual en editar para el reclutador */}
-				{userLogged.role !== "Candidate" && (
+				{userLogged.userName !== "candidate" && (
 					<>
 						<label htmlFor='Revision' className='-mb-4'>
 							{" "}
@@ -236,13 +248,13 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 						<textarea
 							type='text'
 							className='rounded-xl px-6 py-1'
-							disabled={userLogged.role === "Recrutier" ? true : false}
+							disabled={userLogged.userName === "recrutier" ? true : false}
 						/>
 					</>
 				)}
 				<div className='w-full flex justify-around p-2 m-4'>
 					{/* Guardar/editar -> para quien la crea -> Enviar Revision/Aceptar para quien tenga permisos */}
-					{userLogged.role !== "Candidate" ? (
+					{userLogged.userName !== "candidate" ? (
 						<button
 							type='submit'
 							className={`w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-500 bg-green-200/80 text-green-700 hover:border-green-200 hover:text-green-200 hover:bg-green-600 hover:cursor-pointer  ${
@@ -250,9 +262,9 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 							}`}
 							// disabled={!isDirty} REVISAR
 						>
-							{selectOffer.id
+							{!selectOffer.id
 								? "Guardar"
-								: userLogged.role === "Recrutier"
+								: userLogged.userName === "recrutier"
 								? "Editar"
 								: "Hacer Revisión"}
 						</button>
@@ -265,12 +277,20 @@ export function OfertForm({ toggleJobFormModal, selectOffer }) {
 							Aplicar
 						</button>
 					)}
-					{userLogged.role !== "Candidate" && (
+					{userLogged.userName !== "candidate" && (
 						<button
 							className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-red-500 bg-red-200/80 text-red-700 hover:border-red-200 hover:text-red-200 hover:bg-red-600 hover:cursor-pointer'
 							onClick={() => reset()}
 						>
 							Resetear
+						</button>
+					)}
+					{userLogged.userName === "director" && selectOffer.title && (
+						<button
+							className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-900 bg-green-500 text-white hover:font-extrabold hover:bg-green-100 hover:border-green-500  hover:text-green-500 '
+							// onClick={() => aproveOfertFunction}
+						>
+							Publicar oferta
 						</button>
 					)}
 				</div>

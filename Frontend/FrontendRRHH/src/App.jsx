@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LayoutPrincipal from "./Layout/LayoutPrincipal";
 import { OfferView } from "./Pages/OfferView";
+import { UsersView } from "./Pages/UsersView";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 
@@ -23,6 +24,15 @@ export default function App() {
 						</LayoutPrincipal>
 					}
 				/>
+				<Route
+					path='/usersList'
+					element={
+						<LayoutPrincipal>
+							<UsersView />
+						</LayoutPrincipal>
+					}
+				/>
+
 				{/* Agrega más rutas con layout aquí */}
 			</Routes>
 			<ToastContainer />
