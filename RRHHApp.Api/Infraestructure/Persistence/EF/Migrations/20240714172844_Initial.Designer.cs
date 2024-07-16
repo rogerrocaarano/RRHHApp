@@ -11,7 +11,7 @@ using RRHHApp.Api.Infraestructure.Persistence.EF;
 namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240711032039_Initial")]
+    [Migration("20240714172844_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -289,6 +289,24 @@ namespace RRHHApp.Api.Infraestructure.Persistence.EF.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("RRHHApp.Api.Infraestructure.Persistence.EF.AppState", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Parameter")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppState");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -16,6 +16,7 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
             Id = jobOffer.Id,
             Title = jobOffer.Title,
             Description = jobOffer.Description,
+            PublishedDate = jobOffer.PublishedDate,
             ExpirationDate = jobOffer.ExpirationDate,
             DisplayBudget = jobOffer.DisplayBudget,
             Budget = jobOffer.Budget,
@@ -109,5 +110,23 @@ public class JobOfferAppService(JobOfferService jobOfferService): IJobOfferAppSe
     {
         var requirement = await _jobOfferService.GetJobOfferRequirement(requirementId);
         return MapJobRequirementToDto(requirement);
+    }
+
+    public async Task<JobOfferDto> GetPublishedJobOffer(Guid id)
+    {
+        var jobOffer = await _jobOfferService.GetPublishedJobOffer(id);
+        return MapJobOfferToDto(jobOffer);
+    }
+
+    public async Task<List<JobOfferDto>> GetPublishedJobOffers()
+    {
+        var jobOffers = await _jobOfferService.GetPublishedJobOffers();
+        return jobOffers.Select(MapJobOfferToDto).ToList();
+    }
+
+    public async Task<JobOfferDto> PublishJobOffer(Guid id)
+    {
+        var jobOffer = await _jobOfferService.PublishJobOffer(id);
+        return MapJobOfferToDto(jobOffer);
     }
 }
