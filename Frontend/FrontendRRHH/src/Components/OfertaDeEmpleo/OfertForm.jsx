@@ -323,7 +323,7 @@ export function OfertForm({ toggleJobFormModal }) {
 						</button>
 					)}
 					{userLogged.roles.length > 1 &&
-						userLogged.roles[1].name === "Director" &&
+						userLogged.roles.some((role) => role.name === "Director") &&
 						selectOffer.title && (
 							<div
 								className='w-fit px-4 py-2 flex justify-center items-center border-2  rounded-xl font-semibold border-green-900 bg-green-500 text-white hover:font-extrabold hover:bg-green-100 hover:border-green-500  hover:text-green-500 hover:cursor-pointer '
