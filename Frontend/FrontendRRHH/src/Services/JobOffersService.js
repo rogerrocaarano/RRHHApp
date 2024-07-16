@@ -18,7 +18,41 @@ export const createOffer = async (newOffer) => {
 	try {
 		const { data } = await apiJobs.post("/Create", newOffer);
 		console.log("Response de oferta", data);
+		//no devuelve nada, el store hace el trabajo de volver a pedir las ofertas, si aca no sale error
 	} catch (err) {
 		console.log("Error al crear Oferta:", err);
+	}
+};
+
+//Traer Una oferta
+export const getOneOffer = async (offerId) => {
+	console.log("el id que llega al service", offerId);
+	try {
+		const { data } = await apiJobs.get(`/${offerId}`);
+		console.log("Response de oferta", data);
+		return { ...data };
+	} catch (err) {
+		console.log("Error al trater las Ofertas:", err);
+	}
+};
+
+//edita una oferta
+export const updateOffer = async (offerToEdit) => {
+	// try {
+	// 	const { data } = await apiJobs.post("/updateEndPoint", newOffer);
+	// 	console.log("Response de oferta", data);
+	// } catch (err) {
+	// 	console.log("Error al crear Oferta:", err);
+	// }
+	console.log("aca se editaria con esta data", offerToEdit);
+};
+
+export const publishOffer = async (id) => {
+	try {
+		const { data } = await apiJobs.post(`${id}/Publish`);
+		console.log("Respuesta de la publicacion", data);
+		return data;
+	} catch (error) {
+		console.log(error);
 	}
 };
