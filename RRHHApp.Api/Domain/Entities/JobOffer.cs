@@ -11,7 +11,7 @@ public class JobOffer
     public bool DisplayBudget { get; set; }
     public float Budget { get; set; }
     public string Status { get; set; }
-    public List<JobRequirement> Requirements { get; set; }
-    public List<JobOfferReview> Reviews { get; set; }
-    public List<JobApply> Applies { get; set; }
+    public List<JobRequirement> Requirements { get; set; } = [];
+    // public List<JobOfferReview> Reviews { get; set; }
+    // public List<JobApply> Applies { get; set; }
 }
